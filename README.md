@@ -11,9 +11,9 @@ Direct3D 12 그래픽스 파이프라인을 가장 쉬운 단계부터 하나씩
 
 - 이미지를 클릭하거나, 아래 각 번호/이름을 클릭해도 해당 디렉토리로 이동합니다
 
-| [1. ClearScreen](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/01_ClearScreen) |
-|---|
-| <div align="center">[<img src="docs/images/01_ClearScreen.png" width="200"/>](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/01_ClearScreen)</div> |
+| [1. ClearScreen](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/01_ClearScreen) | [2. RenderingTriangle](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/02_RenderingTriangle) |
+|---|---|
+| <div align="center">[<img src="docs/images/01_ClearScreen.png" width="200"/>](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/01_ClearScreen)</div> | <div align="center">[<img src="docs/images/02_RenderingTriangle.png" width="200"/>](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/02_RenderingTriangle)</div> |
 
 ---
 
@@ -25,7 +25,8 @@ Direct3D 12 그래픽스 파이프라인을 가장 쉬운 단계부터 하나씩
 - 외부 의존성 없음 — Windows SDK(`d3d12.h`, `dxgi1_6.h`)만 사용합니다. vcpkg/서드파티 라이브러리는 필요해지는 단계에서 그때 도입합니다.
 
 ## 주의사항
-- 수학 라이브러리인 DirectXMath 사용 예정 (지오메트리 등장 단계부터)
+- 수학 라이브러리인 DirectXMath 사용
+- 셰이더 컴파일을 위해 `D3DCompileFromFile` 런타임 컴파일 사용
 - Debug 빌드에서는 D3D12 디버그 레이어(`ID3D12Debug`)를 활성화합니다
 
 ## 참고 자료
