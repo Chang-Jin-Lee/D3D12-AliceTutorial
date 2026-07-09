@@ -1,5 +1,5 @@
 ## 03. RenderingCube
-- 더 쉬운 설명: [GUIDE.md](GUIDE.md) (고등학생도 이해할 수 있는 버전)
+- 더 쉬운 설명: [GUIDE.md](GUIDE.md)
 - 내용: 2단계의 파이프라인에 뎁스 버퍼, 인덱스 버퍼, 루트 CBV(상수 버퍼)를 추가해서 회전하는 3D 큐브를 그립니다.
 - 주요 구현:
   - `DXGI_FORMAT_D32_FLOAT` 뎁스 버퍼 + DSV 디스크립터 힙, `DepthStencilState.DepthEnable`로 은면 제거
