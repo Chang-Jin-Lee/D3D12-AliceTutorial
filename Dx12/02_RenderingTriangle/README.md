@@ -1,4 +1,5 @@
 ## 02. RenderingTriangle
+- 더 쉬운 설명: [GUIDE.md](GUIDE.md) (고등학생도 이해할 수 있는 버전)
 - 내용: 1단계의 파이프라인 위에 루트 시그니처/PSO/정점 버퍼를 추가해서, 정점마다 다른 색을 가진 삼각형 하나를 그립니다.
 - 주요 구현:
   - 빈 `ID3D12RootSignature` 생성 (`D3D12SerializeRootSignature` + `ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT`)
