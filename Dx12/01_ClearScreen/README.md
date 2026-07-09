@@ -1,5 +1,5 @@
 ## 01. ClearScreen
-- 더 쉬운 설명: [GUIDE.md](GUIDE.md) (고등학생도 이해할 수 있는 버전)
+- 더 쉬운 설명: [GUIDE.md](GUIDE.md)
 - 내용: D3D12 파이프라인의 기본 골격(디바이스~펜스 동기화)만 구성해서, 백버퍼를 매 프레임 단색으로 지웁니다.
 - 주요 구현:
   - `D3D12CreateDevice` / `CreateDXGIFactory2`로 디바이스 및 DXGI 팩토리 생성
