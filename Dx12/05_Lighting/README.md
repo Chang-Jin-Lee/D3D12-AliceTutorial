@@ -1,4 +1,4 @@
-[◀ 이전: 04. TextureMapping](../04_TextureMapping/README.md) · [🏠 전체 목차](../../README.md)
+[◀ 이전: 04. TextureMapping](../04_TextureMapping/README.md) · [🏠 전체 목차](../../README.md) · [다음: 06. Lighting_BlinnPhong ▶](../06_Lighting_BlinnPhong/README.md)
 
 ## 05. Lighting
 

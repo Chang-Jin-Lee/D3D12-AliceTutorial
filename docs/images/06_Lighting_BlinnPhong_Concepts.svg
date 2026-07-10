@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1276 422" font-family="'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+<rect width="1276" height="422" fill="#ffffff"/>
+<text x="638.0" y="52" text-anchor="middle" font-size="30" font-weight="700" fill="#16242f">06. Lighting_BlinnPhong — 핵심 개념 한눈에 보기</text>
+<text x="638.0" y="86" text-anchor="middle" font-size="16" fill="#5b7387">시선 방향과 빛 방향의 "중간 방향"이 노멀과 가까울수록 반짝이는 흐름</text>
+<rect x="40" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="146.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Eye Direction</text>
+<text x="146.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(시선 방향)</text>
+<text x="146.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">👀</text>
+<text x="146.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">표면에서 카메라를</text>
+<text x="146.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">바라보는 방향.</text>
+<text x="146.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">카메라 위치가 필요함</text>
+<path d="M 260.0 246.0 L 278.0 257.0 L 260.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="286" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="392.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Half Vector</text>
+<text x="392.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(하프 벡터)</text>
+<text x="392.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">📐</text>
+<text x="392.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">빛 방향과 시선 방향의</text>
+<text x="392.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">정확히 중간 방향</text>
+<text x="392.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">normalize(L + V)</text>
+<path d="M 506.0 246.0 L 524.0 257.0 L 506.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="532" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="638.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">dot(N, Half)</text>
+<text x="638.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(내적)</text>
+<text x="638.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🤝</text>
+<text x="638.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">노멀과 하프벡터가</text>
+<text x="638.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">얼마나 마주보는지</text>
+<text x="638.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">계산</text>
+<path d="M 752.0 246.0 L 770.0 257.0 L 752.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="778" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="884.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Specular</text>
+<text x="884.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(스페큘러)</text>
+<text x="884.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">✨</text>
+<text x="884.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">그 값을 거듭제곱해서</text>
+<text x="884.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">좁고 밝은 하이라이트로</text>
+<text x="884.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">만듦 (광택도만큼)</text>
+<path d="M 998.0 246.0 L 1016.0 257.0 L 998.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="1024" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="1130.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Final Color</text>
+<text x="1130.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(최종 색)</text>
+<text x="1130.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🌟</text>
+<text x="1130.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">디퓨즈+앰비언트 위에</text>
+<text x="1130.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">하이라이트를 더함</text>
+<text x="1130.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">→ 반짝이는 재질감</text>
+</svg>
