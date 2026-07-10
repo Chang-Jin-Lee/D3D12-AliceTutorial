@@ -1,4 +1,4 @@
-[◀ 이전 가이드: 01. ClearScreen](../01_ClearScreen/GUIDE.md) · [🏠 전체 목차](../../README.md) · [다음 가이드: 03. RenderingCube ▶](../03_RenderingCube/GUIDE.md)
+[◀ 이전 가이드: 01. ClearScreen](../01_ClearScreen/GUIDE.md) · [⬆ 상위로 돌아가기](README.md) · [🏠 전체 목차](../../README.md) · [다음 가이드: 03. RenderingCube ▶](../03_RenderingCube/GUIDE.md)
 
 # 02. RenderingTriangle — 이건 어떻게 만들었을까?
 

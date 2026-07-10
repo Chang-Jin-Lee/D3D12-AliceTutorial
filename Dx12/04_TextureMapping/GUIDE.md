@@ -1,4 +1,4 @@
-[◀ 이전 가이드: 03. RenderingCube](../03_RenderingCube/GUIDE.md) · [🏠 전체 목차](../../README.md) · [다음 가이드: 05. Lighting ▶](../05_Lighting/GUIDE.md)
+[◀ 이전 가이드: 03. RenderingCube](../03_RenderingCube/GUIDE.md) · [⬆ 상위로 돌아가기](README.md) · [🏠 전체 목차](../../README.md) · [다음 가이드: 05. Lighting ▶](../05_Lighting/GUIDE.md)
 
 # 04. TextureMapping — 이건 어떻게 만들었을까?
 

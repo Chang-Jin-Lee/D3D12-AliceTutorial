@@ -1,4 +1,4 @@
-[◀ 이전 가이드: 04. TextureMapping](../04_TextureMapping/GUIDE.md) · [🏠 전체 목차](../../README.md)
+[◀ 이전 가이드: 04. TextureMapping](../04_TextureMapping/GUIDE.md) · [⬆ 상위로 돌아가기](README.md) · [🏠 전체 목차](../../README.md)
 
 # 05. Lighting — 이건 어떻게 만들었을까?
 
