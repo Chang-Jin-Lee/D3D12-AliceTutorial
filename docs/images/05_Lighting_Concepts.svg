@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1522 422" font-family="'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+<rect width="1522" height="422" fill="#ffffff"/>
+<text x="761.0" y="52" text-anchor="middle" font-size="30" font-weight="700" fill="#16242f">05. Lighting — 핵심 개념 한눈에 보기</text>
+<text x="761.0" y="86" text-anchor="middle" font-size="16" fill="#5b7387">면이 향하는 방향과 빛이 오는 방향을 비교해서, 마주 볼수록 밝게 칠하는 흐름</text>
+<rect x="40" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="146.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Normal</text>
+<text x="146.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(노멀)</text>
+<text x="146.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🧭</text>
+<text x="146.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">표면이 바깥쪽으로</text>
+<text x="146.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">향하는 화살표.</text>
+<text x="146.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">큐브는 면마다 하나</text>
+<path d="M 260.0 246.0 L 278.0 257.0 L 260.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="286" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="392.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Light Direction</text>
+<text x="392.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(빛 방향)</text>
+<text x="392.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🔦</text>
+<text x="392.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">빛이 날아오는 방향.</text>
+<text x="392.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">멀리서 평행하게 오는</text>
+<text x="392.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">디렉셔널 라이트</text>
+<path d="M 506.0 246.0 L 524.0 257.0 L 506.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="532" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="638.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">dot(N, -L)</text>
+<text x="638.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(내적)</text>
+<text x="638.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🤝</text>
+<text x="638.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">두 화살표가 “얼마나</text>
+<text x="638.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">마주보는지” 계산.</text>
+<text x="638.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">마주볼수록 1에 가까움</text>
+<path d="M 752.0 246.0 L 770.0 257.0 L 752.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="778" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="884.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Diffuse</text>
+<text x="884.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(디퓨즈)</text>
+<text x="884.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">☀️</text>
+<text x="884.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">빛을 정면으로</text>
+<text x="884.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">받을수록 밝아지는</text>
+<text x="884.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">가장 기본적인 밝기</text>
+<path d="M 998.0 246.0 L 1016.0 257.0 L 998.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="1024" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="1130.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Ambient</text>
+<text x="1130.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(앰비언트)</text>
+<text x="1130.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">💡</text>
+<text x="1130.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">빛이 안 닿는 면도</text>
+<text x="1130.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">새까맣지 않게 깔아주는</text>
+<text x="1130.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">기본 밝기</text>
+<path d="M 1244.0 246.0 L 1262.0 257.0 L 1244.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="1270" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="1376.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Final Color</text>
+<text x="1376.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(최종 색)</text>
+<text x="1376.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🌗</text>
+<text x="1376.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">텍스처 색 ×</text>
+<text x="1376.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">(앰비언트 + 디퓨즈)</text>
+<text x="1376.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">→ 밝은 면과 어두운 면이</text>
+<text x="1376.0" y="373" text-anchor="middle" font-size="13.5" fill="#33475b">생김</text>
+</svg>

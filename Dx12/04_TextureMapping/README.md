@@ -1,4 +1,11 @@
+[◀ 이전: 03. RenderingCube](../03_RenderingCube/README.md) · [🏠 전체 목차](../../README.md) · [다음: 05. Lighting ▶](../05_Lighting/README.md)
+
 ## 04. TextureMapping
+
+<p align="center">
+  <img src="../../docs/images/04_TextureMapping_Concepts.svg" width="100%" alt="04단계 핵심 개념 흐름도" />
+</p>
+
 - 더 쉬운 설명: [GUIDE.md](GUIDE.md)
 - 내용: 3단계의 정점 컬러를 텍스처로 대체하고, 큐브의 버텍스 와인딩을 정리해서 백페이스 컬링을 켭니다.
 - 주요 구현:

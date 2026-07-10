@@ -1,4 +1,11 @@
+[◀ 이전: 04. TextureMapping](../04_TextureMapping/README.md) · [🏠 전체 목차](../../README.md)
+
 ## 05. Lighting
+
+<p align="center">
+  <img src="../../docs/images/05_Lighting_Concepts.svg" width="100%" alt="05단계 핵심 개념 흐름도" />
+</p>
+
 - 더 쉬운 설명: [GUIDE.md](GUIDE.md)
 - 내용: 4단계의 텍스처 큐브에 정점 노멀과 방향광(디렉셔널 라이트)을 추가해서, 빛을 받는 면과 반대편 면의 밝기가 달라지는 간단한 디퓨즈(Lambertian) 라이팅을 구현합니다.
 - 주요 구현:

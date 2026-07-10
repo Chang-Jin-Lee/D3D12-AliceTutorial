@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1522 422" font-family="'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+<rect width="1522" height="422" fill="#ffffff"/>
+<text x="761.0" y="52" text-anchor="middle" font-size="30" font-weight="700" fill="#16242f">02. RenderingTriangle — 핵심 개념 한눈에 보기</text>
+<text x="761.0" y="86" text-anchor="middle" font-size="16" fill="#5b7387">정점 3개가 무지개색 삼각형이 되기까지 — GPU와 계약하고, 프로그램을 넘기고, 데이터를 건네는 흐름</text>
+<rect x="40" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="146.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Root Signature</text>
+<text x="146.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(루트 시그니처)</text>
+<text x="146.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">📜</text>
+<text x="146.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">“이런 종류의 데이터를</text>
+<text x="146.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">줄 거야”라고 GPU와</text>
+<text x="146.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">미리 맺는 계약서</text>
+<path d="M 260.0 246.0 L 278.0 257.0 L 260.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="286" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="392.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Shaders.hlsl</text>
+<text x="392.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(셰이더)</text>
+<text x="392.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">✍️</text>
+<text x="392.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">GPU 안에서 실행되는</text>
+<text x="392.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">아주 작은 프로그램.</text>
+<text x="392.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">정점/픽셀마다</text>
+<text x="392.0" y="373" text-anchor="middle" font-size="13.5" fill="#33475b">한 번씩 실행됨</text>
+<path d="M 506.0 246.0 L 524.0 257.0 L 506.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="532" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="638.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">VSMain</text>
+<text x="638.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(정점 셰이더)</text>
+<text x="638.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">📍</text>
+<text x="638.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">“이 점을 화면 어디에</text>
+<text x="638.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">찍을지” 계산하는</text>
+<text x="638.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">담당자</text>
+<path d="M 752.0 246.0 L 770.0 257.0 L 752.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="778" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="884.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">PSMain</text>
+<text x="884.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(픽셀 셰이더)</text>
+<text x="884.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🎨</text>
+<text x="884.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">“이 픽셀을 무슨 색으로</text>
+<text x="884.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">칠할지” 계산하는</text>
+<text x="884.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">담당자</text>
+<path d="M 998.0 246.0 L 1016.0 257.0 L 998.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="1024" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="1130.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">PSO</text>
+<text x="1130.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(파이프라인 상태)</text>
+<text x="1130.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🧾</text>
+<text x="1130.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">셰이더 + 그리기 설정을</text>
+<text x="1130.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">전부 하나로 묶은</text>
+<text x="1130.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">“레시피 카드”</text>
+<path d="M 1244.0 246.0 L 1262.0 257.0 L 1244.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="1270" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="1376.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Vertex Buffer</text>
+<text x="1376.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(정점 버퍼)</text>
+<text x="1376.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">📌</text>
+<text x="1376.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">“점 3개의 위치+색깔”을</text>
+<text x="1376.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">적어놓은 쪽지.</text>
+<text x="1376.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">GPU 메모리에 복사해서</text>
+<text x="1376.0" y="373" text-anchor="middle" font-size="13.5" fill="#33475b">DrawInstanced로 그리기!</text>
+</svg>

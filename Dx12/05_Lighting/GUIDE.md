@@ -1,3 +1,5 @@
+[◀ 이전 가이드: 04. TextureMapping](../04_TextureMapping/GUIDE.md) · [🏠 전체 목차](../../README.md)
+
 # 05. Lighting — 이건 어떻게 만들었을까?
 
 지금까지 큐브는 어느 방향에서 보든 표면이 똑같이 밝았어요. 실제 물건은 빛을 바라보는
@@ -31,6 +33,10 @@ float diffuseTerm = max(dot(normal, -lightDirection.xyz), 0.0f);
 | 디퓨즈(Diffuse) | 빛을 정면으로 받을수록 밝아지는, 가장 기본적인 밝기 계산 |
 | 앰비언트(Ambient) | 빛이 안 닿는 면도 완전히 새까맣지 않게 깔아주는 "기본 밝기" (현실에서 사방으로 튕겨 들어오는 빛을 대충 흉내낸 것) |
 | 월드 행렬 (World Matrix) | 노멀(화살표)도 큐브가 회전하면 같이 회전해야 하니까, 노멀에도 곱해주는 회전 정보 |
+
+<p align="center">
+  <img src="../../docs/images/05_Lighting_Concepts.svg" width="100%" alt="05단계 핵심 개념 흐름도" />
+</p>
 
 ## 3. 실제로 한 일
 

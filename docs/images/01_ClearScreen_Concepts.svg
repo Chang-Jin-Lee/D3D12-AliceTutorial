@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1522 422" font-family="'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+<rect width="1522" height="422" fill="#ffffff"/>
+<text x="761.0" y="52" text-anchor="middle" font-size="30" font-weight="700" fill="#16242f">01. ClearScreen — 핵심 개념 한눈에 보기</text>
+<text x="761.0" y="86" text-anchor="middle" font-size="16" fill="#5b7387">왼쪽에서 오른쪽으로 읽으면, GPU에게 “화면을 파란색으로 칠해줘”라고 부탁하는 흐름이 됩니다</text>
+<rect x="40" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="146.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">ID3D12Device</text>
+<text x="146.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(디바이스)</text>
+<text x="146.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">📞</text>
+<text x="146.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">그래픽카드와 전화선을</text>
+<text x="146.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">연결하는 것.</text>
+<text x="146.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">“여보세요, 그림</text>
+<text x="146.0" y="373" text-anchor="middle" font-size="13.5" fill="#33475b">그려줄 수 있어요?”</text>
+<path d="M 260.0 246.0 L 278.0 257.0 L 260.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="286" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="392.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">ID3D12CommandQueue</text>
+<text x="392.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(커맨드 큐)</text>
+<text x="392.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">📮</text>
+<text x="392.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">GPU에게 보낼</text>
+<text x="392.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">“할 일 목록”을 넣는</text>
+<text x="392.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">우체통</text>
+<path d="M 506.0 246.0 L 524.0 257.0 L 506.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="532" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="638.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">ID3D12Graphics-</text>
+<text x="638.0" y="170" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">CommandList</text>
+<text x="638.0" y="192" text-anchor="middle" font-size="14" fill="#41607a">(커맨드 리스트)</text>
+<text x="638.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">📝</text>
+<text x="638.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">실제 할 일을 적는 메모지.</text>
+<text x="638.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">“파란색으로 칠해” 같은</text>
+<text x="638.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">지시를 여기에 적음</text>
+<path d="M 752.0 246.0 L 770.0 257.0 L 752.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="778" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="884.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">IDXGISwapChain</text>
+<text x="884.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(스왑체인)</text>
+<text x="884.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🖼️</text>
+<text x="884.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">캔버스 2장.</text>
+<text x="884.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">하나는 화면에 보여주고,</text>
+<text x="884.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">다른 하나에 몰래 그린 뒤</text>
+<text x="884.0" y="373" text-anchor="middle" font-size="13.5" fill="#33475b">바꿔치기 (Present)</text>
+<path d="M 998.0 246.0 L 1016.0 257.0 L 998.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="1024" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="1130.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">ID3D12DescriptorHeap</text>
+<text x="1130.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(RTV 힙)</text>
+<text x="1130.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🗄️</text>
+<text x="1130.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">캔버스(백버퍼)에 붙이는</text>
+<text x="1130.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">이름표 서랍.</text>
+<text x="1130.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">“여기 이름표를 써”</text>
+<path d="M 1244.0 246.0 L 1262.0 257.0 L 1244.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="1270" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="1376.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">ID3D12Fence</text>
+<text x="1376.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(펜스)</text>
+<text x="1376.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🚦</text>
+<text x="1376.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">GPU가 “나 이 일 다</text>
+<text x="1376.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">끝냈어!”라고 알려주는</text>
+<text x="1376.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">신호등</text>
+</svg>

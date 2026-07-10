@@ -1,4 +1,11 @@
+[🏠 전체 목차](../../README.md) · [다음: 02. RenderingTriangle ▶](../02_RenderingTriangle/README.md)
+
 ## 01. ClearScreen
+
+<p align="center">
+  <img src="../../docs/images/01_ClearScreen_Concepts.svg" width="100%" alt="01단계 핵심 개념 흐름도" />
+</p>
+
 - 더 쉬운 설명: [GUIDE.md](GUIDE.md)
 - 내용: D3D12 파이프라인의 기본 골격(디바이스~펜스 동기화)만 구성해서, 백버퍼를 매 프레임 단색으로 지웁니다.
 - 주요 구현:

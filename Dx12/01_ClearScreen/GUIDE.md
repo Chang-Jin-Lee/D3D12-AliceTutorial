@@ -1,3 +1,5 @@
+[🏠 전체 목차](../../README.md) · [다음 가이드: 02. RenderingTriangle ▶](../02_RenderingTriangle/GUIDE.md)
+
 # 01. ClearScreen — 이건 어떻게 만들었을까?
 
 이 프로젝트는 "창을 하나 띄우고, 그 창을 파란색으로 계속 칠하는" 프로그램이에요.
@@ -21,6 +23,10 @@
 | `IDXGISwapChain` (스왑체인) | 그림을 그리는 캔버스 2장. 하나는 지금 화면에 보여주고, 다른 하나에는 몰래 다음 그림을 그림 |
 | `ID3D12DescriptorHeap` (RTV 힙) | 캔버스(백버퍼)에 붙이는 이름표 서랍. "이 캔버스에 그리고 싶으면 여기 이름표를 써" |
 | `ID3D12Fence` (펜스) | GPU가 "나 이 일 다 끝냈어!"라고 알려주는 신호등 |
+
+<p align="center">
+  <img src="../../docs/images/01_ClearScreen_Concepts.svg" width="100%" alt="01단계 핵심 개념 흐름도" />
+</p>
 
 왜 캔버스가 2장 필요할까요? 화면에 보여주는 중인 캔버스에 동시에 그림을 그리면
 그림이 그려지는 중간 과정이 화면에 깜빡이며 보일 수 있어요. 그래서 안 보이는 캔버스에

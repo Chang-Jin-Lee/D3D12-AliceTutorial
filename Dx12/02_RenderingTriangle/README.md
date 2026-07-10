@@ -1,4 +1,11 @@
+[◀ 이전: 01. ClearScreen](../01_ClearScreen/README.md) · [🏠 전체 목차](../../README.md) · [다음: 03. RenderingCube ▶](../03_RenderingCube/README.md)
+
 ## 02. RenderingTriangle
+
+<p align="center">
+  <img src="../../docs/images/02_RenderingTriangle_Concepts.svg" width="100%" alt="02단계 핵심 개념 흐름도" />
+</p>
+
 - 더 쉬운 설명: [GUIDE.md](GUIDE.md)
 - 내용: 1단계의 파이프라인 위에 루트 시그니처/PSO/정점 버퍼를 추가해서, 정점마다 다른 색을 가진 삼각형 하나를 그립니다.
 - 주요 구현:
