@@ -1,4 +1,11 @@
+[◀ 이전: 02. RenderingTriangle](../02_RenderingTriangle/README.md) · [🏠 전체 목차](../../README.md) · [다음: 04. TextureMapping ▶](../04_TextureMapping/README.md)
+
 ## 03. RenderingCube
+
+<p align="center">
+  <img src="../../docs/images/03_RenderingCube_Concepts.svg" width="100%" alt="03단계 핵심 개념 흐름도" />
+</p>
+
 - 더 쉬운 설명: [GUIDE.md](GUIDE.md)
 - 내용: 2단계의 파이프라인에 뎁스 버퍼, 인덱스 버퍼, 루트 CBV(상수 버퍼)를 추가해서 회전하는 3D 큐브를 그립니다.
 - 주요 구현:

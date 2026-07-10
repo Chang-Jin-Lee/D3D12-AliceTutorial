@@ -1,3 +1,5 @@
+[◀ 이전 가이드: 03. RenderingCube](../03_RenderingCube/GUIDE.md) · [🏠 전체 목차](../../README.md) · [다음 가이드: 05. Lighting ▶](../05_Lighting/GUIDE.md)
+
 # 04. TextureMapping — 이건 어떻게 만들었을까?
 
 3단계까지는 큐브 표면이 그냥 단색(꼭짓점 색이 섞인 색)이었어요. 이번엔 큐브 표면에
@@ -21,6 +23,10 @@
 | SRV (`Shader Resource View`) | GPU 셰이더가 텍스처를 "읽기 전용"으로 볼 수 있게 만든 이름표 |
 | 백페이스 컬링 (`Back-face Culling`) | 상자의 안쪽 면(카메라 반대쪽 면)은 안 보이니 애초에 그리지 않는 것 |
 | 와인딩 순서 (`Winding Order`) | 삼각형의 세 꼭짓점을 "시계 방향"으로 도는지 "반시계 방향"으로 도는지의 규칙. 컬링이 이걸 기준으로 앞/뒤를 판단함 |
+
+<p align="center">
+  <img src="../../docs/images/04_TextureMapping_Concepts.svg" width="100%" alt="04단계 핵심 개념 흐름도" />
+</p>
 
 ## 3. 실제로 한 일
 

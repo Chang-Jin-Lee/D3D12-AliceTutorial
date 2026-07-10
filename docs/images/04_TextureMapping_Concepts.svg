@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1522 422" font-family="'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+<rect width="1522" height="422" fill="#ffffff"/>
+<text x="761.0" y="52" text-anchor="middle" font-size="30" font-weight="700" fill="#16242f">04. TextureMapping — 핵심 개념 한눈에 보기</text>
+<text x="761.0" y="86" text-anchor="middle" font-size="16" fill="#5b7387">큐브에 포장지(텍스처)를 씌우고, 안 보이는 뒷면은 아예 그리지 않는 흐름</text>
+<rect x="40" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="146.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Texture2D</text>
+<text x="146.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(텍스처)</text>
+<text x="146.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🎁</text>
+<text x="146.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">물체 표면에 씌우는</text>
+<text x="146.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">그림(포장지).</text>
+<text x="146.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">8x8 체커보드를</text>
+<text x="146.0" y="373" text-anchor="middle" font-size="13.5" fill="#33475b">코드로 직접 생성</text>
+<path d="M 260.0 246.0 L 278.0 257.0 L 260.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="286" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="392.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">UV</text>
+<text x="392.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(UV 좌표)</text>
+<text x="392.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">📐</text>
+<text x="392.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">포장지 위의 좌표.</text>
+<text x="392.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">“이 꼭짓점은 포장지의</text>
+<text x="392.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">(0,0)에 닿아있어”</text>
+<path d="M 506.0 246.0 L 524.0 257.0 L 506.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="532" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="638.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Sampler</text>
+<text x="638.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(샘플러)</text>
+<text x="638.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🔍</text>
+<text x="638.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">포장지 색을 가져올 때</text>
+<text x="638.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">부드럽게 섞을지,</text>
+<text x="638.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">반복할지 정하는 규칙</text>
+<path d="M 752.0 246.0 L 770.0 257.0 L 752.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="778" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="884.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">SRV</text>
+<text x="884.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(셰이더 리소스 뷰)</text>
+<text x="884.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🏷️</text>
+<text x="884.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">셰이더가 텍스처를</text>
+<text x="884.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">“읽기 전용”으로 보게</text>
+<text x="884.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">만든 이름표</text>
+<path d="M 998.0 246.0 L 1016.0 257.0 L 998.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="1024" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="1130.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Winding Order</text>
+<text x="1130.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(와인딩 순서)</text>
+<text x="1130.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🔃</text>
+<text x="1130.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">삼각형 꼭짓점을 도는</text>
+<text x="1130.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">방향 규칙. 컬링이 이걸로</text>
+<text x="1130.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">앞면/뒷면을 판단</text>
+<path d="M 1244.0 246.0 L 1262.0 257.0 L 1244.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="1270" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="1376.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Back-face Culling</text>
+<text x="1376.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(백페이스 컬링)</text>
+<text x="1376.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">✂️</text>
+<text x="1376.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">카메라 반대쪽 면은</text>
+<text x="1376.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">안 보이니 애초에</text>
+<text x="1376.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">그리지 않는 최적화</text>
+</svg>

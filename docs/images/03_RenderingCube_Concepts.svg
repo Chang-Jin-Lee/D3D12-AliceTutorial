@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1522 422" font-family="'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+<rect width="1522" height="422" fill="#ffffff"/>
+<text x="761.0" y="52" text-anchor="middle" font-size="30" font-weight="700" fill="#16242f">03. RenderingCube — 핵심 개념 한눈에 보기</text>
+<text x="761.0" y="86" text-anchor="middle" font-size="16" fill="#5b7387">평평한 삼각형에서 회전하는 3D 큐브로 — 마지막 세 행렬을 곱한 것이 MVP(World × View × Projection) 행렬</text>
+<rect x="40" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="146.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Depth Buffer</text>
+<text x="146.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(뎁스 버퍼)</text>
+<text x="146.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">📏</text>
+<text x="146.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">픽셀마다 “가장 가까운</text>
+<text x="146.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">거리”를 적어두는 메모장.</text>
+<text x="146.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">그보다 멀면 그리지 않음</text>
+<path d="M 260.0 246.0 L 278.0 257.0 L 260.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="286" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="392.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Index Buffer</text>
+<text x="392.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(인덱스 버퍼)</text>
+<text x="392.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🔢</text>
+<text x="392.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">“몇 번, 몇 번, 몇 번 점을</text>
+<text x="392.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">이으면 삼각형 하나”라는</text>
+<text x="392.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">번호 목록</text>
+<path d="M 506.0 246.0 L 524.0 257.0 L 506.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="532" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="638.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Constant Buffer</text>
+<text x="638.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(상수 버퍼)</text>
+<text x="638.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">📬</text>
+<text x="638.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">매 프레임 바뀌는 값</text>
+<text x="638.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">(회전 행렬)을 GPU에</text>
+<text x="638.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">전달하는 작은 우편함</text>
+<path d="M 752.0 246.0 L 770.0 257.0 L 752.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="778" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="884.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">World</text>
+<text x="884.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(월드 행렬)</text>
+<text x="884.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🔄</text>
+<text x="884.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">“큐브를 얼마나</text>
+<text x="884.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">돌릴까?”</text>
+<path d="M 998.0 246.0 L 1016.0 257.0 L 998.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="1024" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="1130.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">View</text>
+<text x="1130.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(뷰 행렬)</text>
+<text x="1130.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">📷</text>
+<text x="1130.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">“카메라가 어디에 있고</text>
+<text x="1130.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">어디를 보고 있을까?”</text>
+<path d="M 1244.0 246.0 L 1262.0 257.0 L 1244.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="1270" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="1376.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Projection</text>
+<text x="1376.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(프로젝션 행렬)</text>
+<text x="1376.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🖼️</text>
+<text x="1376.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">“3D 공간을 눌러서</text>
+<text x="1376.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">평평한 화면(2D)에</text>
+<text x="1376.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">담는 방법”</text>
+</svg>

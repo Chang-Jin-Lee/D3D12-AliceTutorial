@@ -1,3 +1,5 @@
+[◀ 이전 가이드: 02. RenderingTriangle](../02_RenderingTriangle/GUIDE.md) · [🏠 전체 목차](../../README.md) · [다음 가이드: 04. TextureMapping ▶](../04_TextureMapping/GUIDE.md)
+
 # 03. RenderingCube — 이건 어떻게 만들었을까?
 
 이번엔 평평한 삼각형이 아니라, **회전하는 3D 큐브**를 그려요. 3D를 화면(2D)에
@@ -25,6 +27,10 @@
 | 프로젝션 행렬 (Projection) | "3D 공간을 눌러서 평평한 화면(2D)에 담는 방법" |
 
 이 세 행렬을 순서대로 곱한 걸 보통 **MVP 행렬**이라고 불러요.
+
+<p align="center">
+  <img src="../../docs/images/03_RenderingCube_Concepts.svg" width="100%" alt="03단계 핵심 개념 흐름도" />
+</p>
 
 ## 3. 실제로 한 일
 

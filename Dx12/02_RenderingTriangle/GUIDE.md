@@ -1,3 +1,5 @@
+[◀ 이전 가이드: 01. ClearScreen](../01_ClearScreen/GUIDE.md) · [🏠 전체 목차](../../README.md) · [다음 가이드: 03. RenderingCube ▶](../03_RenderingCube/GUIDE.md)
+
 # 02. RenderingTriangle — 이건 어떻게 만들었을까?
 
 1단계에서는 화면을 파란색으로 칠하기만 했어요. 이번엔 그 위에 **삼각형 하나**를 그려요.
@@ -24,6 +26,10 @@ GPU도 똑같아요. 다만 사람 대신 GPU가 그리게 하려면, 이 정보
 | 픽셀 셰이더 (`PSMain`) | "이 픽셀을 무슨 색으로 칠할지" 계산하는 담당자 |
 | 루트 시그니처 (`Root Signature`) | GPU한테 "너한테 이런 종류의 데이터를 줄 거야" 라고 미리 알려주는 계약서 |
 | 파이프라인 상태 (`PSO`) | 셰이더 + 도형을 어떻게 그릴지에 대한 모든 설정을 하나로 묶은 "레시피 카드" |
+
+<p align="center">
+  <img src="../../docs/images/02_RenderingTriangle_Concepts.svg" width="100%" alt="02단계 핵심 개념 흐름도" />
+</p>
 
 ## 3. 실제로 한 일
 
