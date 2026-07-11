@@ -1,4 +1,4 @@
-[◀ 이전: 05. Lighting](../05_Lighting/README.md) · [🏠 전체 목차](../../README.md)
+[◀ 이전: 05. Lighting](../05_Lighting/README.md) · [🏠 전체 목차](../../README.md) · [다음: 07. NormalMapping ▶](../07_NormalMapping/README.md)
 
 ## 06. Lighting_BlinnPhong
 

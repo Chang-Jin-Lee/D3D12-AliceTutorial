@@ -15,6 +15,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "05_Lighting", "05_Lighting\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "06_Lighting_BlinnPhong", "06_Lighting_BlinnPhong\06_Lighting_BlinnPhong.vcxproj", "{3D1866FE-0A9A-4189-A9D7-CF7D4620D75C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "07_NormalMapping", "07_NormalMapping\07_NormalMapping.vcxproj", "{AB8F1BEB-F813-49C6-8327-82F1F59CAF78}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -45,6 +47,10 @@ Global
 		{3D1866FE-0A9A-4189-A9D7-CF7D4620D75C}.Debug|x64.Build.0 = Debug|x64
 		{3D1866FE-0A9A-4189-A9D7-CF7D4620D75C}.Release|x64.ActiveCfg = Release|x64
 		{3D1866FE-0A9A-4189-A9D7-CF7D4620D75C}.Release|x64.Build.0 = Release|x64
+		{AB8F1BEB-F813-49C6-8327-82F1F59CAF78}.Debug|x64.ActiveCfg = Debug|x64
+		{AB8F1BEB-F813-49C6-8327-82F1F59CAF78}.Debug|x64.Build.0 = Debug|x64
+		{AB8F1BEB-F813-49C6-8327-82F1F59CAF78}.Release|x64.ActiveCfg = Release|x64
+		{AB8F1BEB-F813-49C6-8327-82F1F59CAF78}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
