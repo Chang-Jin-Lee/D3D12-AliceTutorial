@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1276 422" font-family="'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+<rect width="1276" height="422" fill="#ffffff"/>
+<text x="638.0" y="52" text-anchor="middle" font-size="30" font-weight="700" fill="#16242f">07. NormalMapping — 핵심 개념 한눈에 보기</text>
+<text x="638.0" y="86" text-anchor="middle" font-size="16" fill="#5b7387">평평한 면이라도, 색 대신 "가짜 울퉁불퉁한 방향"을 칠해두면 라이팅이 입체적으로 보이는 흐름</text>
+<rect x="40" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="146.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Normal Map</text>
+<text x="146.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(노멀 맵)</text>
+<text x="146.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🗺️</text>
+<text x="146.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">픽셀마다 "이 지점의</text>
+<text x="146.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">기울기"를 색으로</text>
+<text x="146.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">저장해둔 그림</text>
+<path d="M 260.0 246.0 L 278.0 257.0 L 260.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="286" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="392.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Tangent</text>
+<text x="392.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(탄젠트)</text>
+<text x="392.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">📏</text>
+<text x="392.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">표면 위에서 UV의</text>
+<text x="392.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">가로 방향. 노멀 맵을</text>
+<text x="392.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">해석할 기준이 됨</text>
+<path d="M 506.0 246.0 L 524.0 257.0 L 506.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="532" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="638.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">TBN Basis</text>
+<text x="638.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(TBN 좌표계)</text>
+<text x="638.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🧱</text>
+<text x="638.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">탄젠트·바이탄젠트·</text>
+<text x="638.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">노멀 3개 축으로 만든</text>
+<text x="638.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">그 지점만의 좌표계</text>
+<path d="M 752.0 246.0 L 770.0 257.0 L 752.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="778" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="884.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Perturbed Normal</text>
+<text x="884.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(교란된 노멀)</text>
+<text x="884.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🌀</text>
+<text x="884.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">노멀 맵 색을 TBN으로</text>
+<text x="884.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">옮겨서 만든, 픽셀마다</text>
+<text x="884.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">다른 새 노멀</text>
+<path d="M 998.0 246.0 L 1016.0 257.0 L 998.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="1024" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="1130.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Lighting</text>
+<text x="1130.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(라이팅 재사용)</text>
+<text x="1130.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">💎</text>
+<text x="1130.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">6단계 디퓨즈+스페큘러</text>
+<text x="1130.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">계산에 새 노멀만</text>
+<text x="1130.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">바꿔 끼워 넣음</text>
+</svg>

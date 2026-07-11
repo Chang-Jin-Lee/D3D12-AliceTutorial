@@ -1,3 +1,5 @@
+[◀ 이전 가이드: 05. Lighting](../05_Lighting/GUIDE.md) · [🏠 전체 목차](../../README.md) · [다음 가이드: 07. NormalMapping ▶](../07_NormalMapping/GUIDE.md)
+
 # 06. Lighting_BlinnPhong — 이건 어떻게 만들었을까?
 
 5단계에서는 "빛을 마주보는 면은 밝고, 등진 면은 어둡다"까지 만들었어요. 이번엔 여기에
@@ -40,6 +42,10 @@ float specularTerm = pow(max(dot(normal, halfVector), 0.0f), specularColor.a);
 | 하프 벡터 (`Half Vector`) | 빛 방향과 시선 방향의 "정확히 중간" 방향 |
 | 광택도 (`Shininess`) | 하이라이트가 얼마나 좁고 강하게 뭉치는지 결정하는 숫자 |
 | 카메라 위치 (`eyePosition`) | 시선 방향을 계산하려면 꼭 필요한 정보라, 이번에 상수 버퍼에 새로 추가됨 |
+
+<p align="center">
+  <img src="../../docs/images/06_Lighting_BlinnPhong_Concepts.svg" width="100%" alt="06단계 핵심 개념 흐름도" />
+</p>
 
 ## 4. 실제로 한 일
 
