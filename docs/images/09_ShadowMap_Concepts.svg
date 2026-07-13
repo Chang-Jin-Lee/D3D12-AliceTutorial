@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1276 422" font-family="'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+<rect width="1276" height="422" fill="#ffffff"/>
+<text x="638.0" y="52" text-anchor="middle" font-size="30" font-weight="700" fill="#16242f">09. ShadowMap — 핵심 개념 한눈에 보기</text>
+<text x="638.0" y="86" text-anchor="middle" font-size="16" fill="#5b7387">빛의 눈으로 한 번 찍어두고, 카메라 화면에서 그 사진과 거리를 비교해 그림자를 판단하는 흐름</text>
+<rect x="40" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="146.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Light's-eye Render</text>
+<text x="146.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(빛 시점 렌더링)</text>
+<text x="146.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">💡</text>
+<text x="146.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">빛이 있는 자리에</text>
+<text x="146.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">카메라를 두고</text>
+<text x="146.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">장면을 한 번 더 그림</text>
+<path d="M 260.0 246.0 L 278.0 257.0 L 260.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="286" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="392.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Shadow Map</text>
+<text x="392.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(셰도우 맵)</text>
+<text x="392.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🗂️</text>
+<text x="392.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">색은 저장 안 하고,</text>
+<text x="392.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">"빛에서 가장 가까운</text>
+<text x="392.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">거리"만 저장</text>
+<path d="M 506.0 246.0 L 524.0 257.0 L 506.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="532" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="638.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Reproject</text>
+<text x="638.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(다시 투영하기)</text>
+<text x="638.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">📍</text>
+<text x="638.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">카메라 화면의 픽셀을,</text>
+<text x="638.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">빛의 시점 좌표로</text>
+<text x="638.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">다시 옮겨봄</text>
+<path d="M 752.0 246.0 L 770.0 257.0 L 752.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="778" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="884.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Depth Compare</text>
+<text x="884.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(깊이 비교)</text>
+<text x="884.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">⚖️</text>
+<text x="884.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">지금 픽셀이 그 저장된</text>
+<text x="884.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">거리보다 멀면 "가려짐"</text>
+<text x="884.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">= 그림자</text>
+<path d="M 998.0 246.0 L 1016.0 257.0 L 998.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="1024" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="1130.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Dim Lighting</text>
+<text x="1130.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(조명 낮추기)</text>
+<text x="1130.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🌑</text>
+<text x="1130.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">그림자 판정된 픽셀은</text>
+<text x="1130.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">디퓨즈+스페큘러를</text>
+<text x="1130.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">줄여서 어둡게 표시</text>
+</svg>
