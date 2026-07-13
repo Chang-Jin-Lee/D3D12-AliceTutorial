@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "06_Lighting_BlinnPhong", "0
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "07_NormalMapping", "07_NormalMapping\07_NormalMapping.vcxproj", "{AB8F1BEB-F813-49C6-8327-82F1F59CAF78}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "08_Skybox", "08_Skybox\08_Skybox.vcxproj", "{2E74877B-B850-4C46-A8F9-5DCAA311BF4C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -51,6 +53,10 @@ Global
 		{AB8F1BEB-F813-49C6-8327-82F1F59CAF78}.Debug|x64.Build.0 = Debug|x64
 		{AB8F1BEB-F813-49C6-8327-82F1F59CAF78}.Release|x64.ActiveCfg = Release|x64
 		{AB8F1BEB-F813-49C6-8327-82F1F59CAF78}.Release|x64.Build.0 = Release|x64
+		{2E74877B-B850-4C46-A8F9-5DCAA311BF4C}.Debug|x64.ActiveCfg = Debug|x64
+		{2E74877B-B850-4C46-A8F9-5DCAA311BF4C}.Debug|x64.Build.0 = Debug|x64
+		{2E74877B-B850-4C46-A8F9-5DCAA311BF4C}.Release|x64.ActiveCfg = Release|x64
+		{2E74877B-B850-4C46-A8F9-5DCAA311BF4C}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
