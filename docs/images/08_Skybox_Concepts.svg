@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1276 422" font-family="'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+<rect width="1276" height="422" fill="#ffffff"/>
+<text x="638.0" y="52" text-anchor="middle" font-size="30" font-weight="700" fill="#16242f">08. Skybox — 핵심 개념 한눈에 보기</text>
+<text x="638.0" y="86" text-anchor="middle" font-size="16" fill="#5b7387">카메라를 감싸는 커다란 상자 안쪽 면에 하늘을 칠해서, 배경이 텅 비어 보이지 않게 하는 흐름</text>
+<rect x="40" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="146.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Big Static Cube</text>
+<text x="146.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(거대한 큐브)</text>
+<text x="146.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">📦</text>
+<text x="146.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">카메라를 통째로</text>
+<text x="146.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">가둘 만큼 커다란</text>
+<text x="146.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">정적인 큐브</text>
+<path d="M 260.0 246.0 L 278.0 257.0 L 260.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="286" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="392.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">No Depth Test</text>
+<text x="392.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(뎁스 끔)</text>
+<text x="392.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🚫</text>
+<text x="392.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">가장 먼저 그리고,</text>
+<text x="392.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">뎁스 테스트 없이</text>
+<text x="392.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">그려서 항상 뒤에 깔림</text>
+<path d="M 506.0 246.0 L 524.0 257.0 L 506.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="532" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="638.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Direction as Color</text>
+<text x="638.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(방향 = 색)</text>
+<text x="638.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🧭</text>
+<text x="638.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">중심이 원점이라,</text>
+<text x="638.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">정점 위치 자체가</text>
+<text x="638.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">바깥 방향이 됨</text>
+<path d="M 752.0 246.0 L 770.0 257.0 L 752.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="778" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="884.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Vertical Gradient</text>
+<text x="884.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(위아래 그라디언트)</text>
+<text x="884.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🌇</text>
+<text x="884.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">방향의 높이(y)로</text>
+<text x="884.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">하늘색과 지평선색을</text>
+<text x="884.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">섞음 (텍스처 없음)</text>
+<path d="M 998.0 246.0 L 1016.0 257.0 L 998.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="1024" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="1130.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Draw Order</text>
+<text x="1130.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(그리는 순서)</text>
+<text x="1130.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🎬</text>
+<text x="1130.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">하늘 먼저 → 진짜</text>
+<text x="1130.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">물체 나중에 그려서</text>
+<text x="1130.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">항상 위에 보이게 함</text>
+</svg>

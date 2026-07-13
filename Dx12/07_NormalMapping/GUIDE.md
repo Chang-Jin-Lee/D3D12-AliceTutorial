@@ -1,4 +1,4 @@
-[◀ 이전 가이드: 06. Lighting_BlinnPhong](../06_Lighting_BlinnPhong/GUIDE.md) · [🏠 전체 목차](../../README.md)
+[◀ 이전 가이드: 06. Lighting_BlinnPhong](../06_Lighting_BlinnPhong/GUIDE.md) · [🏠 전체 목차](../../README.md) · [다음 가이드: 08. Skybox ▶](../08_Skybox/GUIDE.md)
 
 # 07. NormalMapping — 이건 어떻게 만들었을까?
 

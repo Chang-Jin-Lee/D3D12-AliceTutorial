@@ -1,4 +1,4 @@
-[◀ 이전: 06. Lighting_BlinnPhong](../06_Lighting_BlinnPhong/README.md) · [🏠 전체 목차](../../README.md)
+[◀ 이전: 06. Lighting_BlinnPhong](../06_Lighting_BlinnPhong/README.md) · [🏠 전체 목차](../../README.md) · [다음: 08. Skybox ▶](../08_Skybox/README.md)
 
 ## 07. NormalMapping
 
