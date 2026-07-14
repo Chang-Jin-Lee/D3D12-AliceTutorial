@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1276 422" font-family="'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+<rect width="1276" height="422" fill="#ffffff"/>
+<text x="638.0" y="52" text-anchor="middle" font-size="30" font-weight="700" fill="#16242f">10. MSAA — 핵심 개념 한눈에 보기</text>
+<text x="638.0" y="86" text-anchor="middle" font-size="16" fill="#5b7387">한 픽셀 안에서 여러 번 샘플링해두고, 마지막에 평균 내서 계단 모양을 부드럽게 만드는 흐름</text>
+<rect x="40" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="146.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Jagged Edges</text>
+<text x="146.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(계단 현상)</text>
+<text x="146.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🪜</text>
+<text x="146.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">픽셀 1개당 딱 1번만</text>
+<text x="146.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">색을 정하면 비스듬한</text>
+<text x="146.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">모서리가 계단처럼 보임</text>
+<path d="M 260.0 246.0 L 278.0 257.0 L 260.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="286" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="392.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Multisample Target</text>
+<text x="392.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(멀티샘플 타깃)</text>
+<text x="392.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🔬</text>
+<text x="392.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">화면 대신 별도 텍스처에</text>
+<text x="392.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">픽셀마다 N개(4개) 샘플을</text>
+<text x="392.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">두고 렌더링</text>
+<path d="M 506.0 246.0 L 524.0 257.0 L 506.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="532" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="638.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Per-Sample Depth/Color</text>
+<text x="638.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(샘플별 깊이/색)</text>
+<text x="638.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🎯</text>
+<text x="638.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">모서리에 걸친 픽셀은</text>
+<text x="638.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">샘플마다 물체 안/밖이</text>
+<text x="638.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">다르게 판정될 수 있음</text>
+<path d="M 752.0 246.0 L 770.0 257.0 L 752.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="778" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="884.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Resolve</text>
+<text x="884.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(리졸브)</text>
+<text x="884.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🧮</text>
+<text x="884.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">픽셀마다 N개 샘플의</text>
+<text x="884.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">색을 평균 내서 1개의</text>
+<text x="884.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">최종 색으로 합침</text>
+<path d="M 998.0 246.0 L 1016.0 257.0 L 998.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="1024" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="1130.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Smooth Present</text>
+<text x="1130.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(부드럽게 출력)</text>
+<text x="1130.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">✨</text>
+<text x="1130.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">평균 낸 결과를 화면</text>
+<text x="1130.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">버퍼에 담아 출력하면</text>
+<text x="1130.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">모서리가 매끈해 보임</text>
+</svg>
