@@ -1,4 +1,4 @@
-[◀ 이전: 08. Skybox](../08_Skybox/README.md) · [🏠 전체 목차](../../README.md)
+[◀ 이전: 08. Skybox](../08_Skybox/README.md) · [🏠 전체 목차](../../README.md) · [다음: 10. MSAA ▶](../10_MSAA/README.md)
 
 ## 09. ShadowMap
 

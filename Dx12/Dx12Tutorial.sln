@@ -21,6 +21,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "08_Skybox", "08_Skybox\08_S
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "09_ShadowMap", "09_ShadowMap\09_ShadowMap.vcxproj", "{9B1FDE01-ACF1-4ABA-A22E-FEA1D52E1404}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "10_MSAA", "10_MSAA\10_MSAA.vcxproj", "{527224D1-CC45-44A3-9775-8BDBD5113483}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -63,6 +65,10 @@ Global
 		{9B1FDE01-ACF1-4ABA-A22E-FEA1D52E1404}.Debug|x64.Build.0 = Debug|x64
 		{9B1FDE01-ACF1-4ABA-A22E-FEA1D52E1404}.Release|x64.ActiveCfg = Release|x64
 		{9B1FDE01-ACF1-4ABA-A22E-FEA1D52E1404}.Release|x64.Build.0 = Release|x64
+		{527224D1-CC45-44A3-9775-8BDBD5113483}.Debug|x64.ActiveCfg = Debug|x64
+		{527224D1-CC45-44A3-9775-8BDBD5113483}.Debug|x64.Build.0 = Debug|x64
+		{527224D1-CC45-44A3-9775-8BDBD5113483}.Release|x64.ActiveCfg = Release|x64
+		{527224D1-CC45-44A3-9775-8BDBD5113483}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
