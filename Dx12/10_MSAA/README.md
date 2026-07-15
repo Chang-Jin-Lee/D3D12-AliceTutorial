@@ -1,4 +1,4 @@
-[◀ 이전: 09. ShadowMap](../09_ShadowMap/README.md) · [🏠 전체 목차](../../README.md)
+[◀ 이전: 09. ShadowMap](../09_ShadowMap/README.md) · [🏠 전체 목차](../../README.md) · [다음: 11. ComputeShader ▶](../11_ComputeShader/README.md)
 
 ## 10. MSAA
 

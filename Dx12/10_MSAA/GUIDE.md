@@ -1,4 +1,4 @@
-[◀ 이전 가이드: 09. ShadowMap](../09_ShadowMap/GUIDE.md) · [🏠 전체 목차](../../README.md)
+[◀ 이전 가이드: 09. ShadowMap](../09_ShadowMap/GUIDE.md) · [⬆ 상위로 돌아가기](README.md) · [🏠 전체 목차](../../README.md) · [다음 가이드: 11. ComputeShader ▶](../11_ComputeShader/GUIDE.md)
 
 # 10. MSAA — 이건 어떻게 만들었을까?
 
