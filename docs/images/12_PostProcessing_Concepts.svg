@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1522 422" font-family="'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+<rect width="1522" height="422" fill="#ffffff"/>
+<text x="761.0" y="52" text-anchor="middle" font-size="30" font-weight="700" fill="#16242f">12. PostProcessing — 핵심 개념 한눈에 보기</text>
+<text x="761.0" y="86" text-anchor="middle" font-size="16" fill="#5b7387">HDR로 그린 장면에서 밝은 부분만 뽑아 흐리게 번지게 한 뒤, 원본과 합쳐 화면 색 범위로 눌러 담는 흐름</text>
+<rect x="40" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="146.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">HDR Render Target</text>
+<text x="146.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(HDR 렌더타깃)</text>
+<text x="146.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">☀️</text>
+<text x="146.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">1.0 넘는 진짜 밝기도</text>
+<text x="146.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">잘리지 않고 담는</text>
+<text x="146.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">FLOAT16 캔버스</text>
+<path d="M 260.0 246.0 L 278.0 257.0 L 260.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="286" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="392.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">BrightPass</text>
+<text x="392.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(브라이트 패스)</text>
+<text x="392.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🔎</text>
+<text x="392.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">기준치보다 밝은</text>
+<text x="392.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">픽셀만 남기고</text>
+<text x="392.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">나머지는 검게</text>
+<path d="M 506.0 246.0 L 524.0 257.0 L 506.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="532" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="638.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Blur Ping-Pong</text>
+<text x="638.0" y="170" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">(x16)</text>
+<text x="638.0" y="192" text-anchor="middle" font-size="14" fill="#41607a">(블러 핑퐁)</text>
+<text x="638.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🏓</text>
+<text x="638.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">텍스처 2장을</text>
+<text x="638.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">번갈아 가며 블러를</text>
+<text x="638.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">16번 반복 적용</text>
+<path d="M 752.0 246.0 L 770.0 257.0 L 752.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="778" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="884.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Composite (Add)</text>
+<text x="884.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(합성)</text>
+<text x="884.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">➕</text>
+<text x="884.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">원본 장면에</text>
+<text x="884.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">번진 블룸을</text>
+<text x="884.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">더해서 합침</text>
+<path d="M 998.0 246.0 L 1016.0 257.0 L 998.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="1024" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="1130.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Reinhard Tonemap</text>
+<text x="1130.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(톤매핑)</text>
+<text x="1130.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🗜️</text>
+<text x="1130.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">color/(color+1)로</text>
+<text x="1130.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">0~1 범위로</text>
+<text x="1130.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">부드럽게 압축</text>
+<path d="M 1244.0 246.0 L 1262.0 257.0 L 1244.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="1270" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="1376.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Back Buffer</text>
+<text x="1376.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(백버퍼 출력)</text>
+<text x="1376.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🖥️</text>
+<text x="1376.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">CopyResource로</text>
+<text x="1376.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">화면에 최종</text>
+<text x="1376.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">결과 출력</text>
+</svg>
