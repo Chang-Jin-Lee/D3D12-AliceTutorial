@@ -23,9 +23,9 @@ Direct3D 12 그래픽스 파이프라인을 가장 쉬운 단계부터 하나씩
 |---|---|---|---|
 | <div align="center">[<img src="docs/images/09_ShadowMap.png" width="200"/>](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/09_ShadowMap)</div> | <div align="center">[<img src="docs/images/10_MSAA.png" width="200"/>](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/10_MSAA)</div> | <div align="center">[<img src="docs/images/11_ComputeShader.png" width="200"/>](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/11_ComputeShader)</div> | <div align="center">[<img src="docs/images/12_PostProcessing.png" width="200"/>](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/12_PostProcessing)</div> |
 
-| [13. PBRMaterials](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/13_PBRMaterials) |
-|---|
-| <div align="center">[<img src="docs/images/13_PBRMaterials.png" width="200"/>](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/13_PBRMaterials)</div> |
+| [13. PBRMaterials](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/13_PBRMaterials) | [14. BindlessResources](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/14_BindlessResources) |
+|---|---|
+| <div align="center">[<img src="docs/images/13_PBRMaterials.png" width="200"/>](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/13_PBRMaterials)</div> | <div align="center">[<img src="docs/images/14_BindlessResources.png" width="200"/>](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/14_BindlessResources)</div> |
 
 ---
 

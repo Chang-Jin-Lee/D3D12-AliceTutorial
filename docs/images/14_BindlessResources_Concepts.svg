@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1522 422" font-family="'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+<rect width="1522" height="422" fill="#ffffff"/>
+<text x="761.0" y="52" text-anchor="middle" font-size="30" font-weight="700" fill="#16242f">14. BindlessResources — 핵심 개념 한눈에 보기</text>
+<text x="761.0" y="86" text-anchor="middle" font-size="16" fill="#5b7387">큰 디스크립터 테이블을 한 번만 바인딩해두고, 그릴 때마다 루트 상수 인덱스만 바꿔 리소스를 고르는 흐름</text>
+<rect x="40" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="146.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Bindless Table</text>
+<text x="146.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(바인드리스 테이블)</text>
+<text x="146.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🗄️</text>
+<text x="146.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">모든 텍스처를</text>
+<text x="146.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">한 번에 등록해두는</text>
+<text x="146.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">큰 서랍장</text>
+<path d="M 260.0 246.0 L 278.0 257.0 L 260.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="286" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="392.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Resource Array</text>
+<text x="392.0" y="170" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">g_bindlessTextures[16]</text>
+<text x="392.0" y="192" text-anchor="middle" font-size="14" fill="#41607a">(리소스 배열)</text>
+<text x="392.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">📚</text>
+<text x="392.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">서랍장의 칸 16개.</text>
+<text x="392.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">각 칸에 텍스처를</text>
+<text x="392.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">하나씩 등록</text>
+<path d="M 506.0 246.0 L 524.0 257.0 L 506.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="532" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="638.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Root Constants</text>
+<text x="638.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(루트 상수)</text>
+<text x="638.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">📌</text>
+<text x="638.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">“이번엔 몇 번 칸을</text>
+<text x="638.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">봐”라고 그릴 때마다</text>
+<text x="638.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">알려주는 작은 쪽지</text>
+<path d="M 752.0 246.0 L 770.0 257.0 L 752.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="778" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="884.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Dynamic Indexing</text>
+<text x="884.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(다이내믹 인덱싱)</text>
+<text x="884.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🔢</text>
+<text x="884.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">“몇 번” 자체가</text>
+<text x="884.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">런타임에 정해지는</text>
+<text x="884.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">인덱싱 (SM5.1+)</text>
+<path d="M 998.0 246.0 L 1016.0 257.0 L 998.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="1024" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="1130.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Dynamically Uniform</text>
+<text x="1130.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(균일 인덱스)</text>
+<text x="1130.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">⚖️</text>
+<text x="1130.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">그리기 한 번 안에서</text>
+<text x="1130.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">모든 픽셀이 같은</text>
+<text x="1130.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">인덱스 값을 씀</text>
+<path d="M 1244.0 246.0 L 1262.0 257.0 L 1244.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="1270" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="1376.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Draw Cube / Plane</text>
+<text x="1376.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(인덱스만 교체)</text>
+<text x="1376.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🔄</text>
+<text x="1376.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">테이블 재바인딩 없이</text>
+<text x="1376.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">인덱스만 바꿔</text>
+<text x="1376.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">다른 텍스처 사용</text>
+</svg>
