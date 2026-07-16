@@ -27,6 +27,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "11_ComputeShader", "11_Comp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "12_PostProcessing", "12_PostProcessing\12_PostProcessing.vcxproj", "{6B20E91F-7111-4DD9-8C99-D44397B171F1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "13_PBRMaterials", "13_PBRMaterials\13_PBRMaterials.vcxproj", "{036D5611-FD92-4E40-965D-15CEF6221A69}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -81,6 +83,10 @@ Global
 		{6B20E91F-7111-4DD9-8C99-D44397B171F1}.Debug|x64.Build.0 = Debug|x64
 		{6B20E91F-7111-4DD9-8C99-D44397B171F1}.Release|x64.ActiveCfg = Release|x64
 		{6B20E91F-7111-4DD9-8C99-D44397B171F1}.Release|x64.Build.0 = Release|x64
+		{036D5611-FD92-4E40-965D-15CEF6221A69}.Debug|x64.ActiveCfg = Debug|x64
+		{036D5611-FD92-4E40-965D-15CEF6221A69}.Debug|x64.Build.0 = Debug|x64
+		{036D5611-FD92-4E40-965D-15CEF6221A69}.Release|x64.ActiveCfg = Release|x64
+		{036D5611-FD92-4E40-965D-15CEF6221A69}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
