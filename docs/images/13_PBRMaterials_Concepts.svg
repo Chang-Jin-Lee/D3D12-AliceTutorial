@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1522 422" font-family="'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+<rect width="1522" height="422" fill="#ffffff"/>
+<text x="761.0" y="52" text-anchor="middle" font-size="30" font-weight="700" fill="#16242f">13. PBRMaterials — 핵심 개념 한눈에 보기</text>
+<text x="761.0" y="86" text-anchor="middle" font-size="16" fill="#5b7387">재질을 금속성/거칠기 두 숫자로 표현하고, Cook-Torrance 공식(D·G·F)으로 실제 반사에 반영하는 흐름</text>
+<rect x="40" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="146.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Metallic</text>
+<text x="146.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(금속성)</text>
+<text x="146.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🪙</text>
+<text x="146.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">0이면 비금속,</text>
+<text x="146.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">1이면 금속.</text>
+<text x="146.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">디퓨즈 유무를 결정</text>
+<path d="M 260.0 246.0 L 278.0 257.0 L 260.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="286" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="392.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Roughness</text>
+<text x="392.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(거칠기)</text>
+<text x="392.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🪨</text>
+<text x="392.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">낮으면 작고 강한</text>
+<text x="392.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">하이라이트, 높으면</text>
+<text x="392.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">넓고 흐릿한 하이라이트</text>
+<path d="M 506.0 246.0 L 524.0 257.0 L 506.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="532" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="638.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">D: Distribution</text>
+<text x="638.0" y="170" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">(GGX)</text>
+<text x="638.0" y="192" text-anchor="middle" font-size="14" fill="#41607a">(분포 함수)</text>
+<text x="638.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">📊</text>
+<text x="638.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">빛-눈 각도를 보는</text>
+<text x="638.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">마이크로패싯이</text>
+<text x="638.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">얼마나 몰려있는지</text>
+<path d="M 752.0 246.0 L 770.0 257.0 L 752.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="778" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="884.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">G: Geometry</text>
+<text x="884.0" y="170" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">(Smith)</text>
+<text x="884.0" y="192" text-anchor="middle" font-size="14" fill="#41607a">(가림 함수)</text>
+<text x="884.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🗻</text>
+<text x="884.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">마이크로패싯끼리</text>
+<text x="884.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">서로 가리는</text>
+<text x="884.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">정도</text>
+<path d="M 998.0 246.0 L 1016.0 257.0 L 998.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="1024" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="1130.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">F: Fresnel</text>
+<text x="1130.0" y="170" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">(Schlick)</text>
+<text x="1130.0" y="192" text-anchor="middle" font-size="14" fill="#41607a">(프레넬 반사)</text>
+<text x="1130.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🔭</text>
+<text x="1130.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">스치는 각도일수록</text>
+<text x="1130.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">반사율이 올라가는</text>
+<text x="1130.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">현상</text>
+<path d="M 1244.0 246.0 L 1262.0 257.0 L 1244.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="1270" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="1376.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Cook-Torrance</text>
+<text x="1376.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(최종 반사)</text>
+<text x="1376.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">✨</text>
+<text x="1376.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">(D × G × F)</text>
+<text x="1376.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">/ (4·NdotV·NdotL)</text>
+<text x="1376.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">로 하이라이트 계산</text>
+</svg>
