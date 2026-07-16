@@ -1,4 +1,4 @@
-[◀ 이전 가이드: 10. MSAA](../10_MSAA/GUIDE.md) · [⬆ 상위로 돌아가기](README.md) · [🏠 전체 목차](../../README.md) · [다음 가이드: 12. PostProcessing ▶](../12_PostProcessing/GUIDE.md)
+[◀ 이전 가이드: 10. MSAA](../10_MSAA/GUIDE.md) · [⬆ 상위로 돌아가기](README.md) · [🏠 전체 목차](../../README.md)
 
 # 11. ComputeShader — 이건 어떻게 만들었을까?
 

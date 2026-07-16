@@ -1,4 +1,4 @@
-[◀ 이전: 10. MSAA](../10_MSAA/README.md) · [🏠 전체 목차](../../README.md) · [다음: 12. PostProcessing ▶](../12_PostProcessing/README.md)
+[◀ 이전: 10. MSAA](../10_MSAA/README.md) · [🏠 전체 목차](../../README.md)
 
 ## 11. ComputeShader
 
