@@ -31,6 +31,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "13_PBRMaterials", "13_PBRMa
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "14_BindlessResources", "14_BindlessResources\14_BindlessResources.vcxproj", "{B44F45BD-2CF6-405A-9BCA-879336B9AE21}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "15_MultiThreadedRendering", "15_MultiThreadedRendering\15_MultiThreadedRendering.vcxproj", "{7A3C9E12-4F5D-4B8A-9E1C-2D6F8A0B3C4D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -93,6 +95,10 @@ Global
 		{B44F45BD-2CF6-405A-9BCA-879336B9AE21}.Debug|x64.Build.0 = Debug|x64
 		{B44F45BD-2CF6-405A-9BCA-879336B9AE21}.Release|x64.ActiveCfg = Release|x64
 		{B44F45BD-2CF6-405A-9BCA-879336B9AE21}.Release|x64.Build.0 = Release|x64
+		{7A3C9E12-4F5D-4B8A-9E1C-2D6F8A0B3C4D}.Debug|x64.ActiveCfg = Debug|x64
+		{7A3C9E12-4F5D-4B8A-9E1C-2D6F8A0B3C4D}.Debug|x64.Build.0 = Debug|x64
+		{7A3C9E12-4F5D-4B8A-9E1C-2D6F8A0B3C4D}.Release|x64.ActiveCfg = Release|x64
+		{7A3C9E12-4F5D-4B8A-9E1C-2D6F8A0B3C4D}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
