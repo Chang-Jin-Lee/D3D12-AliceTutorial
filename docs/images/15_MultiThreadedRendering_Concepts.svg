@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1522 422" font-family="'Segoe UI', 'Malgun Gothic', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif">
+<rect width="1522" height="422" fill="#ffffff"/>
+<text x="761.0" y="52" text-anchor="middle" font-size="30" font-weight="700" fill="#16242f">15. MultiThreadedRendering — 핵심 개념 한눈에 보기</text>
+<text x="761.0" y="86" text-anchor="middle" font-size="16" fill="#5b7387">씬을 나눠서 여러 스레드가 각자 커맨드 리스트에 기록하고, 메인 스레드가 한 번에 모아 제출하는 흐름</text>
+<rect x="40" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="146.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Cube Grid</text>
+<text x="146.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(큐브 16개)</text>
+<text x="146.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🧊</text>
+<text x="146.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">4x4 그리드로</text>
+<text x="146.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">나뉜 16개의</text>
+<text x="146.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">독립된 큐브</text>
+<path d="M 260.0 246.0 L 278.0 257.0 L 260.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="286" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="392.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Split by Thread</text>
+<text x="392.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(작업 나누기)</text>
+<text x="392.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">✂️</text>
+<text x="392.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">16개를 4개씩</text>
+<text x="392.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">워커 스레드</text>
+<text x="392.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">4개에 배분</text>
+<path d="M 506.0 246.0 L 524.0 257.0 L 506.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="532" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="638.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Worker Threads</text>
+<text x="638.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(워커 스레드)</text>
+<text x="638.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🧵</text>
+<text x="638.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">std::thread 4개가</text>
+<text x="638.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">동시에 각자 몫을</text>
+<text x="638.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">기록</text>
+<path d="M 752.0 246.0 L 770.0 257.0 L 752.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="778" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="884.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Command Lists</text>
+<text x="884.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(각자의 커맨드 리스트)</text>
+<text x="884.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">📋</text>
+<text x="884.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">스레드마다 자기</text>
+<text x="884.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">커맨드 리스트에</text>
+<text x="884.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">그리기 명령 기록</text>
+<path d="M 998.0 246.0 L 1016.0 257.0 L 998.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="1024" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="1130.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">Main Thread Join</text>
+<text x="1130.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(메인 스레드 취합)</text>
+<text x="1130.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🔗</text>
+<text x="1130.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">모든 스레드가</text>
+<text x="1130.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">끝날 때까지</text>
+<text x="1130.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">메인 스레드가 대기</text>
+<path d="M 1244.0 246.0 L 1262.0 257.0 L 1244.0 268.0 Z" fill="#a5c1d6"/>
+<rect x="1270" y="116" width="212" height="282" rx="14" fill="#edf3f8"/>
+<text x="1376.0" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1d3345">ExecuteCommandLists</text>
+<text x="1376.0" y="172" text-anchor="middle" font-size="14" fill="#41607a">(한 번에 제출)</text>
+<text x="1376.0" y="268" text-anchor="middle" font-size="52" font-family="'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif">🚀</text>
+<text x="1376.0" y="310" text-anchor="middle" font-size="13.5" fill="#33475b">순서대로 배열에</text>
+<text x="1376.0" y="331" text-anchor="middle" font-size="13.5" fill="#33475b">담아 GPU 큐에</text>
+<text x="1376.0" y="352" text-anchor="middle" font-size="13.5" fill="#33475b">한 번에 제출</text>
+</svg>
