@@ -274,6 +274,28 @@ App::App(HWND hwnd, UINT width, UINT height)
     InitRaytracingPipeline();
     InitRaytracingShaderTable();
     InitSkybox();
+
+    // The title bar doubles as the UI for the F key toggle, so it has to
+    // start out agreeing with m_shadowMode's initial value.
+    UpdateWindowTitle();
+}
+
+void App::UpdateWindowTitle()
+{
+    SetWindowTextW(m_hwnd, m_shadowMode == 0
+        ? L"D3D12 Tutorial - 16. DXRRayTracing  |  Shadow Map  [F] to switch"
+        : L"D3D12 Tutorial - 16. DXRRayTracing  |  Raytraced Shadows  [F] to switch");
+}
+
+void App::OnKeyDown(WPARAM key)
+{
+    if (key != 'F')
+    {
+        return;
+    }
+
+    m_shadowMode = (m_shadowMode == 0) ? 1u : 0u;
+    UpdateWindowTitle();
 }
 
 App::~App()
@@ -2135,7 +2157,10 @@ void App::Render()
     // index set before each draw.
     m_commandList->SetGraphicsRootDescriptorTable(2, m_srvHeap->GetGPUDescriptorHandleForHeapStart());
 
-    const BindlessMaterialIndices planeIndices = { 1, 2, 3, 0 }; // diffuse2@1, normalMap@2, shadowMap@3
+    // diffuse2@1, normalMap@2, shadowMap@3, then the current shadowing
+    // technique and the raytraced mask's slot.
+    const BindlessMaterialIndices planeIndices =
+        { 1, 2, 3, m_shadowMode, ShadowMaskBindlessIndex, { 0, 0, 0 } };
     m_commandList->SetGraphicsRoot32BitConstants(1, sizeof(planeIndices) / sizeof(UINT32), &planeIndices, 0);
     m_commandList->SetGraphicsRootConstantBufferView(0, m_planeConstantBuffer->GetGPUVirtualAddress());
     m_commandList->IASetVertexBuffers(0, 1, &m_planeVertexBufferView);
@@ -2383,8 +2408,11 @@ void App::RecordWorkerCommandList(UINT threadIndex)
 
     // Every cube uses the same material (diffuse@0, normalMap@2, shadowMap@3
     // - see BindlessMaterialIndices), so this is set once per worker rather
-    // than once per cube.
-    const BindlessMaterialIndices cubeIndices = { 0, 2, 3, 0 };
+    // than once per cube. m_shadowMode is only ever written from the
+    // message loop, which never overlaps Render(), so the workers can read
+    // it without any synchronization.
+    const BindlessMaterialIndices cubeIndices =
+        { 0, 2, 3, m_shadowMode, ShadowMaskBindlessIndex, { 0, 0, 0 } };
     commandList->SetGraphicsRoot32BitConstants(1, sizeof(cubeIndices) / sizeof(UINT32), &cubeIndices, 0);
     commandList->IASetVertexBuffers(0, 1, &m_vertexBufferView);
     commandList->IASetIndexBuffer(&m_indexBufferView);

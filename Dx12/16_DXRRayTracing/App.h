@@ -74,7 +74,13 @@ struct BindlessMaterialIndices
     UINT diffuseTextureIndex;
     UINT normalMapIndex;
     UINT shadowMapIndex;
-    UINT padding;
+    // Where this draw call should get its shadowing from: 0 = the step 9
+    // shadow map at shadowMapIndex, 1 = the raytraced mask at
+    // shadowMaskIndex. Toggled at runtime with the F key so both
+    // techniques can be judged against the same frame's geometry.
+    UINT shadowMode;
+    UINT shadowMaskIndex;
+    UINT padding[3];
 };
 
 // Extends step 14 by replacing the single rotating cube with a
@@ -101,6 +107,7 @@ public:
 
     void Update();
     void Render();
+    void OnKeyDown(WPARAM key);
 
 private:
     static const UINT FrameCount = 2;
@@ -172,6 +179,7 @@ private:
     void InitRaytracingShaderTable();
     void UpdateTopLevelAccelerationStructure(ID3D12GraphicsCommandList4* commandList);
     void RenderRaytracedShadows(ID3D12GraphicsCommandList4* commandList);
+    void UpdateWindowTitle();
     void RecordWorkerCommandList(UINT threadIndex);
     D3D12_GPU_VIRTUAL_ADDRESS CubeConstantBufferAddress(UINT cubeIndex) const;
     D3D12_GPU_VIRTUAL_ADDRESS ShadowCubeConstantBufferAddress(UINT cubeIndex) const;
@@ -335,6 +343,11 @@ private:
     // created in the same state (NON_PIXEL_SHADER_RESOURCE) they always
     // end a frame in, so their transitions never special-case frame 1.
     bool m_isFirstFrame = true;
+    // 0 = the step 9 shadow map, 1 = the raytraced mask. Defaults to the
+    // raytraced one so the step opens on what it's actually about. Written
+    // only from OnKeyDown (the message loop) and read only from Render, and
+    // those two never overlap - see RecordWorkerCommandList.
+    UINT m_shadowMode = 1;
 
     // Raytracing acceleration structures. Bottom-level structures hold the
     // actual triangles, one per unique mesh, and are built once here

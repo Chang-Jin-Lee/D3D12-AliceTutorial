@@ -24,7 +24,11 @@ cbuffer MaterialIndices : register(b1)
     uint diffuseTextureIndex;
     uint normalMapIndex;
     uint shadowMapIndex;
-    uint materialIndicesPadding;
+    // 0 = sample the shadow map at shadowMapIndex, 1 = read the raytraced
+    // mask at shadowMaskIndex. The F key flips this at runtime.
+    uint shadowMode;
+    uint shadowMaskIndex;
+    uint3 materialIndicesPadding;
 };
 
 struct PSInput
@@ -66,6 +70,21 @@ float SampleShadow(float4 lightSpacePosition)
     const float bias = 0.0015f;
     float storedDepth = g_bindlessTextures[shadowMapIndex].Sample(g_sampler, shadowUV).r;
     return (ndc.z - bias > storedDepth) ? 0.3f : 1.0f;
+}
+
+// The raytraced alternative. Because the mask was produced in screen space
+// - one ray per pixel, written at the pixel's own coordinate - reading it
+// is a straight Load with no projection, no bias, no frustum test and no
+// acne. Everything SampleShadow above has to work around simply doesn't
+// arise when the visibility question is answered by an actual ray.
+//
+// The 0.3 floor matches SampleShadow so the two techniques dim shadowed
+// areas by the same amount, leaving only the *shape* of the shadow to
+// differ when the F key flips between them.
+float SampleRaytracedShadow(float2 screenPosition)
+{
+    float visibility = g_bindlessTextures[shadowMaskIndex].Load(int3(int2(screenPosition), 0)).r;
+    return lerp(0.3f, 1.0f, visibility);
 }
 
 static const float PI = 3.14159265f;
@@ -153,7 +172,9 @@ float4 PSMain(PSInput input) : SV_TARGET
     float3 kD = (1.0f - kS) * (1.0f - metallic);
     float3 diffuseBRDF = kD * albedo / PI;
 
-    float shadowFactor = SampleShadow(input.lightSpacePosition);
+    float shadowFactor = (shadowMode == 0)
+        ? SampleShadow(input.lightSpacePosition)
+        : SampleRaytracedShadow(input.position.xy);
     float3 radiance = lightColor.rgb * shadowFactor;
 
     float3 directLight = (diffuseBRDF + specularBRDF) * radiance * NdotL;

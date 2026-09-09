@@ -13,6 +13,18 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
+    // First keyboard input in the tutorial - steps 1-15 all ran a fixed
+    // animation with nothing to press. The window's user data holds the
+    // App pointer, stashed there by wWinMain once the app exists.
+    case WM_KEYDOWN:
+    {
+        App* app = reinterpret_cast<App*>(GetWindowLongPtrW(hwnd, GWLP_USERDATA));
+        if (app != nullptr)
+        {
+            app->OnKeyDown(wParam);
+        }
+        return 0;
+    }
     case WM_DESTROY:
         PostQuitMessage(0);
         return 0;
@@ -43,6 +55,11 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, LPWSTR, int nCmdShow)
     try
     {
         App app(hwnd, kWidth, kHeight);
+        // WndProc is a free function, so this is how it reaches the app to
+        // forward key presses. Cleared again below before `app` goes out
+        // of scope, so no message arriving during teardown can follow a
+        // dangling pointer.
+        SetWindowLongPtrW(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(&app));
 
         ShowWindow(hwnd, nCmdShow);
 
@@ -60,6 +77,7 @@ int WINAPI wWinMain(HINSTANCE hInstance, HINSTANCE, LPWSTR, int nCmdShow)
             }
         }
 
+        SetWindowLongPtrW(hwnd, GWLP_USERDATA, 0);
         return static_cast<int>(msg.wParam);
     }
     catch (const std::exception& e)
