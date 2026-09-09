@@ -121,6 +121,15 @@ private:
     static const UINT WorkerThreadCount = 4;
     static const UINT CubesPerWorker = CubeCount / WorkerThreadCount;
 
+    // TLAS instance layout: the CubeCount cube instances come first (all
+    // pointing at the one shared m_cubeBlas), then a single instance for
+    // the ground plane. That order is load-bearing -
+    // UpdateTopLevelAccelerationStructure gives the cube instances
+    // InstanceContributionToHitGroupIndex 0 and the plane instance 1, which
+    // is how each picks its own record out of the hit group shader table
+    // (see InitRaytracingShaderTable).
+    static const UINT RaytracingInstanceCount = CubeCount + 1;
+
     void InitDevice();
     void InitRaytracingSupport();
     void InitCommandQueue();
@@ -139,6 +148,8 @@ private:
     void InitTextures();
     void InitSkybox();
     void InitShadowMap();
+    void InitRaytracingAccelerationStructures();
+    void UpdateTopLevelAccelerationStructure(ID3D12GraphicsCommandList4* commandList);
     void RecordWorkerCommandList(UINT threadIndex);
     D3D12_GPU_VIRTUAL_ADDRESS CubeConstantBufferAddress(UINT cubeIndex) const;
     D3D12_GPU_VIRTUAL_ADDRESS ShadowCubeConstantBufferAddress(UINT cubeIndex) const;
@@ -163,7 +174,12 @@ private:
     Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_rtvHeap;
     Microsoft::WRL::ComPtr<ID3D12Resource> m_renderTargets[FrameCount];
     Microsoft::WRL::ComPtr<ID3D12CommandAllocator> m_commandAllocator;
-    Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> m_commandList;
+    // ID3D12GraphicsCommandList4, not the plain list steps 1-15 used:
+    // BuildRaytracingAccelerationStructure, SetPipelineState1 and
+    // DispatchRays only exist on this interface. The worker lists and the
+    // post-process list below stay on the base interface because none of
+    // them record raytracing work.
+    Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList4> m_commandList;
     // One allocator/list pair per worker thread, created once in
     // InitCommandList and reused every frame (safe because Render() always
     // fully waits on the fence in WaitForPreviousFrame before returning -
@@ -297,6 +313,33 @@ private:
     // created in the same state (NON_PIXEL_SHADER_RESOURCE) they always
     // end a frame in, so their transitions never special-case frame 1.
     bool m_isFirstFrame = true;
+
+    // Raytracing acceleration structures. Bottom-level structures hold the
+    // actual triangles, one per unique mesh, and are built once here
+    // because neither mesh's vertices ever move in object space. The
+    // CubeCount spinning cubes all reference the same m_cubeBlas - that
+    // reuse is the whole reason DXR splits acceleration structures into
+    // two levels instead of building one giant structure per frame.
+    Microsoft::WRL::ComPtr<ID3D12Resource> m_cubeBlas;
+    Microsoft::WRL::ComPtr<ID3D12Resource> m_planeBlas;
+    // The top-level structure holds one instance per object, each with its
+    // own world transform. The cubes spin, so this one is rebuilt from
+    // scratch every frame in UpdateTopLevelAccelerationStructure. At
+    // RaytracingInstanceCount instances a full rebuild costs about what a
+    // refit would, and it keeps the code to a single path.
+    Microsoft::WRL::ComPtr<ID3D12Resource> m_topLevelAS;
+    Microsoft::WRL::ComPtr<ID3D12Resource> m_tlasScratch;
+    // Upload-heap array of D3D12_RAYTRACING_INSTANCE_DESC, left mapped for
+    // the lifetime of the app so each frame's transforms can be written
+    // without a Map/Unmap pair - same approach as the constant buffers.
+    Microsoft::WRL::ComPtr<ID3D12Resource> m_tlasInstanceDescs;
+    D3D12_RAYTRACING_INSTANCE_DESC* m_mappedTlasInstanceDescs = nullptr;
+    // Each cube's object-to-world transform for this frame, written by
+    // Update() from the very same matrix it feeds the raster constant
+    // buffers. UpdateTopLevelAccelerationStructure copies these into the
+    // instance descs, so the rasterizer and the ray tracer can never
+    // disagree about where the geometry is.
+    std::array<DirectX::XMFLOAT3X4, CubeCount> m_cubeInstanceTransforms;
 
     D3D12_VIEWPORT m_viewport = {};
     D3D12_RECT m_scissorRect = {};

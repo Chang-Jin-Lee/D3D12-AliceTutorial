@@ -1,6 +1,7 @@
 #include "App.h"
 
 #include <d3dcompiler.h>
+#include <algorithm>
 #include <cmath>
 #include <thread>
 #include <vector>
@@ -58,6 +59,40 @@ namespace
             buffer->Unmap(0, nullptr);
         }
 
+        return buffer;
+    }
+
+    // Acceleration structures and the scratch space they're built through
+    // have requirements no buffer in steps 1-15 had: a DEFAULT heap (the
+    // driver writes them from the GPU, so an upload heap is useless) and
+    // ALLOW_UNORDERED_ACCESS (the build is a UAV write).
+    //
+    // initialState is RAYTRACING_ACCELERATION_STRUCTURE for the structures
+    // themselves - a state they then never leave - and COMMON for scratch.
+    // Scratch does need to be UNORDERED_ACCESS by the time a build reads
+    // it, but D3D12 creates every buffer in COMMON regardless of what's
+    // asked for and warns if told otherwise; common-state promotion then
+    // moves it to UNORDERED_ACCESS on first use for free.
+    ComPtr<ID3D12Resource> CreateUavBuffer(
+        ID3D12Device* device, UINT64 size, D3D12_RESOURCE_STATES initialState)
+    {
+        D3D12_HEAP_PROPERTIES heapProps = {};
+        heapProps.Type = D3D12_HEAP_TYPE_DEFAULT;
+
+        D3D12_RESOURCE_DESC resourceDesc = {};
+        resourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+        resourceDesc.Width = size;
+        resourceDesc.Height = 1;
+        resourceDesc.DepthOrArraySize = 1;
+        resourceDesc.MipLevels = 1;
+        resourceDesc.Format = DXGI_FORMAT_UNKNOWN;
+        resourceDesc.SampleDesc.Count = 1;
+        resourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+        resourceDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS;
+
+        ComPtr<ID3D12Resource> buffer;
+        ThrowIfFailed(device->CreateCommittedResource(
+            &heapProps, D3D12_HEAP_FLAG_NONE, &resourceDesc, initialState, nullptr, IID_PPV_ARGS(&buffer)));
         return buffer;
     }
 
@@ -153,6 +188,7 @@ App::App(HWND hwnd, UINT width, UINT height)
     InitRootSignature();
     InitPipelineState();
     InitSceneGeometry();
+    InitRaytracingAccelerationStructures();
     InitConstantBuffer();
     InitTextures();
     InitSkybox();
@@ -166,6 +202,7 @@ App::~App()
     if (m_skyboxConstantBuffer) m_skyboxConstantBuffer->Unmap(0, nullptr);
     if (m_shadowCubeConstantBuffers) m_shadowCubeConstantBuffers->Unmap(0, nullptr);
     if (m_shadowPlaneConstantBuffer) m_shadowPlaneConstantBuffer->Unmap(0, nullptr);
+    if (m_tlasInstanceDescs) m_tlasInstanceDescs->Unmap(0, nullptr);
     CloseHandle(m_fenceEvent);
 }
 
@@ -928,6 +965,206 @@ void App::InitSceneGeometry()
     m_planeIndexBufferView.SizeInBytes = planeIndexBufferSize;
 }
 
+void App::InitRaytracingAccelerationStructures()
+{
+    // A geometry desc points the builder straight at the vertex and index
+    // buffers the rasterizer already uses - no separate copy of the mesh.
+    // They live in upload heaps (see InitSceneGeometry), which is fine:
+    // upload-heap resources are permanently in GENERIC_READ, and that
+    // includes the NON_PIXEL_SHADER_RESOURCE state a build reads from.
+    auto makeGeometryDesc = [](const D3D12_VERTEX_BUFFER_VIEW& vertexBufferView,
+                               const D3D12_INDEX_BUFFER_VIEW& indexBufferView,
+                               UINT indexCount)
+    {
+        D3D12_RAYTRACING_GEOMETRY_DESC desc = {};
+        desc.Type = D3D12_RAYTRACING_GEOMETRY_TYPE_TRIANGLES;
+        // Marking the geometry opaque lets traversal skip any-hit shaders
+        // entirely. Both meshes here are solid, and it's also what lets a
+        // shadow ray legitimately stop at the first thing it touches.
+        desc.Flags = D3D12_RAYTRACING_GEOMETRY_FLAG_OPAQUE;
+        desc.Triangles.VertexBuffer.StartAddress = vertexBufferView.BufferLocation;
+        desc.Triangles.VertexBuffer.StrideInBytes = vertexBufferView.StrideInBytes;
+        desc.Triangles.VertexCount = vertexBufferView.SizeInBytes / vertexBufferView.StrideInBytes;
+        // Only the position is read during traversal, so the builder needs
+        // the format of that field alone - not of the whole Vertex struct,
+        // whose normal/tangent/uv it steps over via StrideInBytes.
+        desc.Triangles.VertexFormat = DXGI_FORMAT_R32G32B32_FLOAT;
+        desc.Triangles.IndexBuffer = indexBufferView.BufferLocation;
+        desc.Triangles.IndexCount = indexCount;
+        desc.Triangles.IndexFormat = indexBufferView.Format;
+        desc.Triangles.Transform3x4 = 0; // no per-geometry transform; instances carry it
+        return desc;
+    };
+
+    // Building an acceleration structure is GPU work, so it needs a command
+    // list - the same open/record/execute/wait shape InitTextures uses for
+    // its texture uploads.
+    ThrowIfFailed(m_commandAllocator->Reset());
+    ThrowIfFailed(m_commandList->Reset(m_commandAllocator.Get(), nullptr));
+
+    // Scratch buffers are only needed while the build runs, so both BLAS
+    // builds can share one sized to the larger of the two.
+    ComPtr<ID3D12Resource> blasScratch;
+    UINT64 blasScratchSize = 0;
+
+    auto buildBottomLevel = [&](const D3D12_RAYTRACING_GEOMETRY_DESC& geometryDesc,
+                                ComPtr<ID3D12Resource>& outBlas,
+                                D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_INPUTS& outInputs,
+                                D3D12_RAYTRACING_ACCELERATION_STRUCTURE_PREBUILD_INFO& outPrebuildInfo)
+    {
+        outInputs = {};
+        outInputs.Type = D3D12_RAYTRACING_ACCELERATION_STRUCTURE_TYPE_BOTTOM_LEVEL;
+        // These meshes are built once and traced against forever, so trade
+        // build time for traversal speed.
+        outInputs.Flags = D3D12_RAYTRACING_ACCELERATION_STRUCTURE_BUILD_FLAG_PREFER_FAST_TRACE;
+        outInputs.DescsLayout = D3D12_ELEMENTS_LAYOUT_ARRAY;
+        outInputs.NumDescs = 1;
+        outInputs.pGeometryDescs = &geometryDesc;
+
+        // The driver, not the app, decides how much memory a structure
+        // needs - the internal layout is entirely vendor-specific.
+        outPrebuildInfo = {};
+        m_dxrDevice->GetRaytracingAccelerationStructurePrebuildInfo(&outInputs, &outPrebuildInfo);
+        outBlas = CreateUavBuffer(
+            m_device.Get(), outPrebuildInfo.ResultDataMaxSizeInBytes,
+            D3D12_RESOURCE_STATE_RAYTRACING_ACCELERATION_STRUCTURE);
+        blasScratchSize = (std::max)(blasScratchSize, outPrebuildInfo.ScratchDataSizeInBytes);
+    };
+
+    const D3D12_RAYTRACING_GEOMETRY_DESC cubeGeometry =
+        makeGeometryDesc(m_vertexBufferView, m_indexBufferView, m_indexCount);
+    const D3D12_RAYTRACING_GEOMETRY_DESC planeGeometry =
+        makeGeometryDesc(m_planeVertexBufferView, m_planeIndexBufferView, m_planeIndexCount);
+
+    D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_INPUTS cubeInputs = {};
+    D3D12_RAYTRACING_ACCELERATION_STRUCTURE_PREBUILD_INFO cubePrebuildInfo = {};
+    buildBottomLevel(cubeGeometry, m_cubeBlas, cubeInputs, cubePrebuildInfo);
+
+    D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_INPUTS planeInputs = {};
+    D3D12_RAYTRACING_ACCELERATION_STRUCTURE_PREBUILD_INFO planePrebuildInfo = {};
+    buildBottomLevel(planeGeometry, m_planeBlas, planeInputs, planePrebuildInfo);
+
+    blasScratch = CreateUavBuffer(m_device.Get(), blasScratchSize, D3D12_RESOURCE_STATE_COMMON);
+
+    auto recordBuild = [&](const D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_INPUTS& inputs,
+                           ID3D12Resource* destination)
+    {
+        D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_DESC buildDesc = {};
+        buildDesc.Inputs = inputs;
+        buildDesc.ScratchAccelerationStructureData = blasScratch->GetGPUVirtualAddress();
+        buildDesc.DestAccelerationStructureData = destination->GetGPUVirtualAddress();
+        m_commandList->BuildRaytracingAccelerationStructure(&buildDesc, 0, nullptr);
+
+        // Both builds share one scratch buffer, so the second can't start
+        // writing it until the first is done reading it. There's no state
+        // transition to express that - acceleration structures never leave
+        // RAYTRACING_ACCELERATION_STRUCTURE - so a UAV barrier is the only
+        // tool for the job.
+        D3D12_RESOURCE_BARRIER barrier = {};
+        barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
+        barrier.UAV.pResource = destination;
+        m_commandList->ResourceBarrier(1, &barrier);
+    };
+
+    recordBuild(cubeInputs, m_cubeBlas.Get());
+    recordBuild(planeInputs, m_planeBlas.Get());
+
+    ThrowIfFailed(m_commandList->Close());
+    ID3D12CommandList* commandLists[] = { m_commandList.Get() };
+    m_commandQueue->ExecuteCommandLists(1, commandLists);
+    WaitForPreviousFrame();
+
+    // The top level is rebuilt every frame rather than here, but its
+    // storage and the instance array feeding it are allocated once.
+    D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_INPUTS topLevelInputs = {};
+    topLevelInputs.Type = D3D12_RAYTRACING_ACCELERATION_STRUCTURE_TYPE_TOP_LEVEL;
+    topLevelInputs.Flags = D3D12_RAYTRACING_ACCELERATION_STRUCTURE_BUILD_FLAG_PREFER_FAST_TRACE;
+    topLevelInputs.DescsLayout = D3D12_ELEMENTS_LAYOUT_ARRAY;
+    topLevelInputs.NumDescs = RaytracingInstanceCount;
+
+    D3D12_RAYTRACING_ACCELERATION_STRUCTURE_PREBUILD_INFO topLevelPrebuildInfo = {};
+    m_dxrDevice->GetRaytracingAccelerationStructurePrebuildInfo(&topLevelInputs, &topLevelPrebuildInfo);
+    m_topLevelAS = CreateUavBuffer(
+        m_device.Get(), topLevelPrebuildInfo.ResultDataMaxSizeInBytes,
+        D3D12_RESOURCE_STATE_RAYTRACING_ACCELERATION_STRUCTURE);
+    m_tlasScratch = CreateUavBuffer(
+        m_device.Get(), topLevelPrebuildInfo.ScratchDataSizeInBytes, D3D12_RESOURCE_STATE_COMMON);
+
+    // Not a constant buffer, but CreateConstantBuffer is the existing
+    // helper for "upload-heap buffer that stays mapped", which is exactly
+    // what the instance array needs.
+    m_tlasInstanceDescs = CreateConstantBuffer(
+        m_device.Get(), sizeof(D3D12_RAYTRACING_INSTANCE_DESC) * RaytracingInstanceCount,
+        reinterpret_cast<void**>(&m_mappedTlasInstanceDescs));
+
+    // Everything about an instance except its transform is fixed for the
+    // life of the app, so it's filled in once here; each frame only
+    // rewrites the transforms (UpdateTopLevelAccelerationStructure).
+    const D3D12_RAYTRACING_INSTANCE_DESC templateInstance = {};
+    for (UINT instanceIndex = 0; instanceIndex < RaytracingInstanceCount; ++instanceIndex)
+    {
+        D3D12_RAYTRACING_INSTANCE_DESC& instance = m_mappedTlasInstanceDescs[instanceIndex];
+        instance = templateInstance;
+        instance.InstanceID = instanceIndex;
+        // A ray's InstanceInclusionMask is AND-ed with this; 0xFF means
+        // "every ray can see me". Masks are how a real renderer would, say,
+        // keep a character out of its own reflection.
+        instance.InstanceMask = 0xFF;
+        instance.Flags = D3D12_RAYTRACING_INSTANCE_FLAG_NONE;
+
+        const bool isCube = instanceIndex < CubeCount;
+        // The one shared cube BLAS for all CubeCount cube instances - the
+        // point of having two levels at all.
+        instance.AccelerationStructure = isCube
+            ? m_cubeBlas->GetGPUVirtualAddress()
+            : m_planeBlas->GetGPUVirtualAddress();
+        // Which record of the hit group shader table this instance's hits
+        // run. Record 0 carries the cube's vertex/index buffers, record 1
+        // the plane's (see InitRaytracingShaderTable).
+        instance.InstanceContributionToHitGroupIndex = isCube ? 0 : 1;
+
+        // Identity to start with. The cubes get a real transform every
+        // frame; the plane keeps this one, since its vertices are already
+        // in world space and its world matrix is the identity.
+        instance.Transform[0][0] = 1.0f;
+        instance.Transform[1][1] = 1.0f;
+        instance.Transform[2][2] = 1.0f;
+    }
+}
+
+void App::UpdateTopLevelAccelerationStructure(ID3D12GraphicsCommandList4* commandList)
+{
+    // Only the transforms change frame to frame - every other field was
+    // filled once in InitRaytracingAccelerationStructures.
+    for (UINT cubeIndex = 0; cubeIndex < CubeCount; ++cubeIndex)
+    {
+        memcpy(m_mappedTlasInstanceDescs[cubeIndex].Transform,
+               &m_cubeInstanceTransforms[cubeIndex],
+               sizeof(m_mappedTlasInstanceDescs[cubeIndex].Transform));
+    }
+
+    D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_INPUTS inputs = {};
+    inputs.Type = D3D12_RAYTRACING_ACCELERATION_STRUCTURE_TYPE_TOP_LEVEL;
+    inputs.Flags = D3D12_RAYTRACING_ACCELERATION_STRUCTURE_BUILD_FLAG_PREFER_FAST_TRACE;
+    inputs.DescsLayout = D3D12_ELEMENTS_LAYOUT_ARRAY;
+    inputs.NumDescs = RaytracingInstanceCount;
+    inputs.InstanceDescs = m_tlasInstanceDescs->GetGPUVirtualAddress();
+
+    D3D12_BUILD_RAYTRACING_ACCELERATION_STRUCTURE_DESC buildDesc = {};
+    buildDesc.Inputs = inputs;
+    buildDesc.ScratchAccelerationStructureData = m_tlasScratch->GetGPUVirtualAddress();
+    buildDesc.DestAccelerationStructureData = m_topLevelAS->GetGPUVirtualAddress();
+    commandList->BuildRaytracingAccelerationStructure(&buildDesc, 0, nullptr);
+
+    // The DispatchRays right after this reads what the build just wrote,
+    // and there's no state transition available to order the two, so this
+    // UAV barrier is what keeps them from overlapping.
+    D3D12_RESOURCE_BARRIER tlasBarrier = {};
+    tlasBarrier.Type = D3D12_RESOURCE_BARRIER_TYPE_UAV;
+    tlasBarrier.UAV.pResource = m_topLevelAS.Get();
+    commandList->ResourceBarrier(1, &tlasBarrier);
+}
+
 void App::InitConstantBuffer()
 {
     m_cubeConstantBuffers = CreateConstantBufferArray(
@@ -1291,6 +1528,14 @@ void App::Update()
         const XMVECTOR gridPosition = XMLoadFloat3(&m_cubeGridPositions[cubeIndex]);
         const XMMATRIX cubeWorld =
             XMMatrixScaling(0.45f, 0.45f, 0.45f) * cubeSpin * XMMatrixTranslationFromVector(gridPosition);
+
+        // The very same matrix the raster constant buffer gets, in the 3x4
+        // layout D3D12_RAYTRACING_INSTANCE_DESC wants. XMStoreFloat3x4
+        // transposes as it stores, which is exactly the conversion from
+        // DirectXMath's row-vector convention to DXR's column-vector one.
+        // Feeding both paths from one matrix is what guarantees the
+        // raytraced shadows line up with the rasterized cubes.
+        XMStoreFloat3x4(&m_cubeInstanceTransforms[cubeIndex], cubeWorld);
 
         SceneConstantBuffer* cb = reinterpret_cast<SceneConstantBuffer*>(
             m_mappedCubeConstantBuffers + static_cast<size_t>(cubeIndex) * CubeCBStride);
