@@ -171,6 +171,7 @@ private:
     void InitRaytracingPipeline();
     void InitRaytracingShaderTable();
     void UpdateTopLevelAccelerationStructure(ID3D12GraphicsCommandList4* commandList);
+    void RenderRaytracedShadows(ID3D12GraphicsCommandList4* commandList);
     void RecordWorkerCommandList(UINT threadIndex);
     D3D12_GPU_VIRTUAL_ADDRESS CubeConstantBufferAddress(UINT cubeIndex) const;
     D3D12_GPU_VIRTUAL_ADDRESS ShadowCubeConstantBufferAddress(UINT cubeIndex) const;

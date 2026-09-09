@@ -1958,10 +1958,55 @@ void App::Update()
 
     XMStoreFloat4x4(&m_mappedShadowPlaneConstantBuffer->mvp, XMMatrixTranspose(planeWorld * lightViewProjection));
 
+    // RayGenShader unprojects NDC through this to build its camera rays,
+    // so it has to invert exactly the view-projection the raster passes
+    // use - anything else and the mask would sit slightly off from the
+    // image it gets composited into.
+    const XMMATRIX viewProjection = view * projection;
+    XMStoreFloat4x4(&m_mappedRaytracingConstantBuffer->inverseViewProjection,
+                    XMMatrixTranspose(XMMatrixInverse(nullptr, viewProjection)));
+    XMStoreFloat4(&m_mappedRaytracingConstantBuffer->cameraPosition, kEyePosition);
+    XMStoreFloat4(&m_mappedRaytracingConstantBuffer->lightDirection, kLightDirection);
+
     const XMMATRIX skyboxWorld = XMMatrixScaling(kSkyboxScale, kSkyboxScale, kSkyboxScale);
     XMStoreFloat4x4(&m_mappedSkyboxConstantBuffer->mvp, XMMatrixTranspose(skyboxWorld * view * projection));
     m_mappedSkyboxConstantBuffer->skyColor = { 0.35f, 0.55f, 0.9f, 1.0f };
     m_mappedSkyboxConstantBuffer->horizonColor = { 0.85f, 0.9f, 0.95f, 1.0f };
+}
+
+void App::RenderRaytracedShadows(ID3D12GraphicsCommandList4* commandList)
+{
+    // Raytracing root arguments go through the *compute* setters, not the
+    // graphics ones: DispatchRays lives on the compute side of the API
+    // even though what it produces here feeds a graphics pass.
+    commandList->SetComputeRootSignature(m_raytracingGlobalRootSignature.Get());
+    ID3D12DescriptorHeap* heaps[] = { m_raytracingUavHeap.Get() };
+    commandList->SetDescriptorHeaps(_countof(heaps), heaps);
+    commandList->SetComputeRootDescriptorTable(0, m_raytracingUavHeap->GetGPUDescriptorHandleForHeapStart());
+    commandList->SetComputeRootShaderResourceView(1, m_topLevelAS->GetGPUVirtualAddress());
+    commandList->SetComputeRootConstantBufferView(2, m_raytracingConstantBuffer->GetGPUVirtualAddress());
+
+    D3D12_DISPATCH_RAYS_DESC dispatchDesc = {};
+    // The raygen table holds exactly one record, so it needs no stride -
+    // this is the only one of the three described by size alone.
+    dispatchDesc.RayGenerationShaderRecord.StartAddress = m_rayGenShaderTable->GetGPUVirtualAddress();
+    dispatchDesc.RayGenerationShaderRecord.SizeInBytes = m_rayGenShaderTable->GetDesc().Width;
+    dispatchDesc.MissShaderTable.StartAddress = m_missShaderTable->GetGPUVirtualAddress();
+    dispatchDesc.MissShaderTable.SizeInBytes = m_missShaderTableSize;
+    dispatchDesc.MissShaderTable.StrideInBytes = m_missShaderTableStride;
+    dispatchDesc.HitGroupTable.StartAddress = m_hitGroupShaderTable->GetGPUVirtualAddress();
+    dispatchDesc.HitGroupTable.SizeInBytes = m_hitGroupShaderTableSize;
+    dispatchDesc.HitGroupTable.StrideInBytes = m_hitGroupShaderTableStride;
+    // One ray per pixel of the final image - RayGenShader runs once per
+    // entry in this grid, the same way a compute shader thread does.
+    dispatchDesc.Width = m_width;
+    dispatchDesc.Height = m_height;
+    dispatchDesc.Depth = 1;
+
+    // SetPipelineState1, not SetPipelineState - a state object isn't a PSO
+    // and doesn't go through the same setter.
+    commandList->SetPipelineState1(m_raytracingStateObject.Get());
+    commandList->DispatchRays(&dispatchDesc);
 }
 
 void App::Render()
@@ -1970,6 +2015,37 @@ void App::Render()
 
     ThrowIfFailed(m_commandAllocator->Reset());
     ThrowIfFailed(m_commandList->Reset(m_commandAllocator.Get(), nullptr));
+
+    // Pass 0: the raytraced shadow mask, which has to exist before the
+    // color pass samples it. Building it from camera rays rather than from
+    // the color pass's depth buffer is exactly what lets it run first -
+    // reconstructing world positions from depth would mean the color pass
+    // needed the mask and the mask needed the color pass, so a depth
+    // pre-pass would have to be added to break the cycle.
+    if (!m_isFirstFrame)
+    {
+        // The mask is created in UNORDERED_ACCESS, so frame 1 skips this;
+        // every frame after that, the color pass left it as a pixel shader
+        // resource and DispatchRays needs it writable again.
+        D3D12_RESOURCE_BARRIER maskToWrite = {};
+        maskToWrite.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+        maskToWrite.Transition.pResource = m_shadowMask.Get();
+        maskToWrite.Transition.StateBefore = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+        maskToWrite.Transition.StateAfter = D3D12_RESOURCE_STATE_UNORDERED_ACCESS;
+        maskToWrite.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+        m_commandList->ResourceBarrier(1, &maskToWrite);
+    }
+
+    UpdateTopLevelAccelerationStructure(m_commandList.Get());
+    RenderRaytracedShadows(m_commandList.Get());
+
+    D3D12_RESOURCE_BARRIER maskToRead = {};
+    maskToRead.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+    maskToRead.Transition.pResource = m_shadowMask.Get();
+    maskToRead.Transition.StateBefore = D3D12_RESOURCE_STATE_UNORDERED_ACCESS;
+    maskToRead.Transition.StateAfter = D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE;
+    maskToRead.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+    m_commandList->ResourceBarrier(1, &maskToRead);
 
     m_commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
