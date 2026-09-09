@@ -1,6 +1,11 @@
 #include "App.h"
 
 #include <d3dcompiler.h>
+// DXC, the compiler that replaced FXC. Steps 1-15 only ever needed
+// d3dcompiler.h; DXR forces the switch because it needs DXIL, which FXC
+// cannot emit. Both compilers coexist here - only RayTracing.hlsl goes
+// through this one.
+#include <dxcapi.h>
 #include <algorithm>
 #include <cmath>
 #include <thread>
@@ -9,6 +14,7 @@
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
 #pragma comment(lib, "d3dcompiler.lib")
+#pragma comment(lib, "dxcompiler.lib")
 
 using Microsoft::WRL::ComPtr;
 using namespace DirectX;
@@ -29,6 +35,78 @@ namespace
     {
         return XMVector3Normalize(XMVectorSet(0.5f, -1.0f, 0.3f, 0.0f));
     }();
+
+    // Export names have to match the function names in RayTracing.hlsl
+    // character for character. A typo doesn't fail the build - it fails
+    // much later, as a null shader identifier when the shader table is
+    // assembled, which is why InitRaytracingShaderTable checks for that.
+    const wchar_t* kRayGenShaderName = L"RayGenShader";
+    const wchar_t* kClosestHitShaderName = L"ClosestHitShader";
+    const wchar_t* kMissShaderName = L"MissShader";
+    const wchar_t* kShadowMissShaderName = L"ShadowMissShader";
+    // Hit group names, unlike the four above, are invented on the D3D side
+    // rather than declared in HLSL: a hit group is a grouping of up to
+    // three shader stages, and these two deliberately share one
+    // ClosestHitShader while differing only in their shader table record.
+    const wchar_t* kCubeHitGroupName = L"CubeHitGroup";
+    const wchar_t* kPlaneHitGroupName = L"PlaneHitGroup";
+
+    // FXC (D3DCompileFromFile, used by every other shader here) stops at
+    // shader model 5.1 and emits DXBC. DXR needs DXIL from shader model
+    // 6.3 or newer, which only DXC produces - so this one shader takes a
+    // completely separate path through a completely separate compiler.
+    ComPtr<IDxcBlob> CompileRaytracingLibrary(const wchar_t* fileName)
+    {
+        ComPtr<IDxcUtils> utils;
+        ComPtr<IDxcCompiler3> compiler;
+        if (FAILED(DxcCreateInstance(CLSID_DxcUtils, IID_PPV_ARGS(&utils))) ||
+            FAILED(DxcCreateInstance(CLSID_DxcCompiler, IID_PPV_ARGS(&compiler))))
+        {
+            throw std::runtime_error(
+                "Failed to load dxcompiler.dll - it and dxil.dll must sit next to the executable. "
+                "The project copies both out of the Windows SDK after every build.");
+        }
+
+        ComPtr<IDxcBlobEncoding> source;
+        ThrowIfFailed(utils->LoadFile(fileName, nullptr, &source));
+
+        DxcBuffer sourceBuffer = {};
+        sourceBuffer.Ptr = source->GetBufferPointer();
+        sourceBuffer.Size = source->GetBufferSize();
+        sourceBuffer.Encoding = DXC_CP_ACP;
+
+        // No -E entry point, unlike every FXC call in this file: a library
+        // target exports every function carrying a [shader("...")]
+        // attribute, which is how one file holds the raygen shader, the
+        // closest-hit shader, and both miss shaders at once.
+        std::vector<const wchar_t*> arguments = { L"-T", L"lib_6_3" };
+#if defined(_DEBUG)
+        arguments.push_back(L"-Zi");
+        arguments.push_back(L"-Qembed_debug");
+        arguments.push_back(L"-Od");
+#endif
+
+        ComPtr<IDxcResult> result;
+        ThrowIfFailed(compiler->Compile(
+            &sourceBuffer, arguments.data(), static_cast<UINT32>(arguments.size()),
+            nullptr, IID_PPV_ARGS(&result)));
+
+        HRESULT compileStatus = S_OK;
+        ThrowIfFailed(result->GetStatus(&compileStatus));
+        if (FAILED(compileStatus))
+        {
+            ComPtr<IDxcBlobUtf8> errors;
+            result->GetOutput(DXC_OUT_ERRORS, IID_PPV_ARGS(&errors), nullptr);
+            throw std::runtime_error(
+                (errors != nullptr && errors->GetStringLength() > 0)
+                    ? std::string("RayTracing.hlsl failed to compile:\n") + errors->GetStringPointer()
+                    : "RayTracing.hlsl failed to compile.");
+        }
+
+        ComPtr<IDxcBlob> shader;
+        ThrowIfFailed(result->GetOutput(DXC_OUT_OBJECT, IID_PPV_ARGS(&shader), nullptr));
+        return shader;
+    }
 
     ComPtr<ID3D12Resource> CreateUploadBuffer(ID3D12Device* device, const void* data, UINT size)
     {
@@ -193,6 +271,7 @@ App::App(HWND hwnd, UINT width, UINT height)
     InitTextures();
     InitRaytracingOutput();
     InitRaytracingRootSignatures();
+    InitRaytracingPipeline();
     InitSkybox();
 }
 
@@ -1485,6 +1564,120 @@ void App::InitRaytracingRootSignatures()
     ThrowIfFailed(m_device->CreateRootSignature(
         0, localSignature->GetBufferPointer(), localSignature->GetBufferSize(),
         IID_PPV_ARGS(&m_raytracingLocalRootSignature)));
+}
+
+void App::InitRaytracingPipeline()
+{
+    ComPtr<IDxcBlob> library = CompileRaytracingLibrary(L"RayTracing.hlsl");
+
+    // A state object is described as a flat array of subobjects, each a
+    // type tag plus a pointer to a desc. Most samples build this through
+    // the CD3DX12_STATE_OBJECT_DESC helper in d3dx12.h; doing it by hand
+    // keeps the dependency list empty and, more usefully, keeps every part
+    // of the structure visible. All the descs below are locals, which is
+    // fine because none of them outlive the CreateStateObject call.
+    //
+    // Eight subobjects: the library, two hit groups, the shader config,
+    // the local root signature and its export association, the global
+    // root signature, and the pipeline config.
+    D3D12_STATE_SUBOBJECT subobjects[8] = {};
+    UINT subobjectIndex = 0;
+
+    // 1. The compiled library, and which of its exports this state object
+    //    uses. Naming them rather than passing zero exports (which would
+    //    take everything) keeps the state object honest about its contents.
+    D3D12_EXPORT_DESC exportDescs[4] = {};
+    exportDescs[0].Name = kRayGenShaderName;
+    exportDescs[1].Name = kClosestHitShaderName;
+    exportDescs[2].Name = kMissShaderName;
+    exportDescs[3].Name = kShadowMissShaderName;
+
+    D3D12_DXIL_LIBRARY_DESC libraryDesc = {};
+    libraryDesc.DXILLibrary.pShaderBytecode = library->GetBufferPointer();
+    libraryDesc.DXILLibrary.BytecodeLength = library->GetBufferSize();
+    libraryDesc.NumExports = _countof(exportDescs);
+    libraryDesc.pExports = exportDescs;
+    subobjects[subobjectIndex].Type = D3D12_STATE_SUBOBJECT_TYPE_DXIL_LIBRARY;
+    subobjects[subobjectIndex].pDesc = &libraryDesc;
+    ++subobjectIndex;
+
+    // 2/3. Two hit groups over the *same* closest-hit shader. They exist
+    //      as separate groups purely so the shader table can hand each one
+    //      different local root arguments - the cube's vertex/index buffer
+    //      addresses for one, the plane's for the other.
+    D3D12_HIT_GROUP_DESC cubeHitGroup = {};
+    cubeHitGroup.HitGroupExport = kCubeHitGroupName;
+    cubeHitGroup.Type = D3D12_HIT_GROUP_TYPE_TRIANGLES;
+    cubeHitGroup.ClosestHitShaderImport = kClosestHitShaderName;
+    subobjects[subobjectIndex].Type = D3D12_STATE_SUBOBJECT_TYPE_HIT_GROUP;
+    subobjects[subobjectIndex].pDesc = &cubeHitGroup;
+    ++subobjectIndex;
+
+    D3D12_HIT_GROUP_DESC planeHitGroup = {};
+    planeHitGroup.HitGroupExport = kPlaneHitGroupName;
+    planeHitGroup.Type = D3D12_HIT_GROUP_TYPE_TRIANGLES;
+    planeHitGroup.ClosestHitShaderImport = kClosestHitShaderName;
+    subobjects[subobjectIndex].Type = D3D12_STATE_SUBOBJECT_TYPE_HIT_GROUP;
+    subobjects[subobjectIndex].pDesc = &planeHitGroup;
+    ++subobjectIndex;
+
+    // 4. Payload and attribute sizes. The driver reserves per-ray stack
+    //    space from these numbers, so they have to cover the *largest*
+    //    payload any shader here uses - RayPayload's float + float3, not
+    //    the smaller ShadowPayload.
+    D3D12_RAYTRACING_SHADER_CONFIG shaderConfig = {};
+    shaderConfig.MaxPayloadSizeInBytes = 4 * sizeof(float);
+    shaderConfig.MaxAttributeSizeInBytes = 2 * sizeof(float); // triangle barycentrics
+    subobjects[subobjectIndex].Type = D3D12_STATE_SUBOBJECT_TYPE_RAYTRACING_SHADER_CONFIG;
+    subobjects[subobjectIndex].pDesc = &shaderConfig;
+    ++subobjectIndex;
+
+    // 5/6. The local root signature, then an association naming which
+    //      exports it applies to. Without the association the runtime has
+    //      no way to tell the local signature belongs to the hit groups
+    //      rather than to the raygen or miss shaders.
+    ID3D12RootSignature* localRootSignature = m_raytracingLocalRootSignature.Get();
+    subobjects[subobjectIndex].Type = D3D12_STATE_SUBOBJECT_TYPE_LOCAL_ROOT_SIGNATURE;
+    subobjects[subobjectIndex].pDesc = &localRootSignature;
+    const D3D12_STATE_SUBOBJECT* localRootSignatureSubobject = &subobjects[subobjectIndex];
+    ++subobjectIndex;
+
+    const wchar_t* hitGroupExports[] = { kCubeHitGroupName, kPlaneHitGroupName };
+    D3D12_SUBOBJECT_TO_EXPORTS_ASSOCIATION association = {};
+    association.pSubobjectToAssociate = localRootSignatureSubobject;
+    association.NumExports = _countof(hitGroupExports);
+    association.pExports = hitGroupExports;
+    subobjects[subobjectIndex].Type = D3D12_STATE_SUBOBJECT_TYPE_SUBOBJECT_TO_EXPORTS_ASSOCIATION;
+    subobjects[subobjectIndex].pDesc = &association;
+    ++subobjectIndex;
+
+    // 7. The global root signature. No association needed - with none, it
+    //    applies to everything, which is exactly what "global" means.
+    ID3D12RootSignature* globalRootSignature = m_raytracingGlobalRootSignature.Get();
+    subobjects[subobjectIndex].Type = D3D12_STATE_SUBOBJECT_TYPE_GLOBAL_ROOT_SIGNATURE;
+    subobjects[subobjectIndex].pDesc = &globalRootSignature;
+    ++subobjectIndex;
+
+    // 8. Recursion depth. Both rays are fired from RayGenShader rather
+    //    than the shadow ray being spawned inside ClosestHitShader, so a
+    //    depth of 1 covers it. Every extra level costs stack the driver
+    //    must reserve for every ray in flight, so the limit is worth
+    //    keeping as tight as the shaders actually need.
+    D3D12_RAYTRACING_PIPELINE_CONFIG pipelineConfig = {};
+    pipelineConfig.MaxTraceRecursionDepth = 1;
+    subobjects[subobjectIndex].Type = D3D12_STATE_SUBOBJECT_TYPE_RAYTRACING_PIPELINE_CONFIG;
+    subobjects[subobjectIndex].pDesc = &pipelineConfig;
+    ++subobjectIndex;
+
+    D3D12_STATE_OBJECT_DESC stateObjectDesc = {};
+    stateObjectDesc.Type = D3D12_STATE_OBJECT_TYPE_RAYTRACING_PIPELINE;
+    stateObjectDesc.NumSubobjects = subobjectIndex;
+    stateObjectDesc.pSubobjects = subobjects;
+    ThrowIfFailed(m_dxrDevice->CreateStateObject(&stateObjectDesc, IID_PPV_ARGS(&m_raytracingStateObject)));
+
+    // The interface that turns export names into the shader identifiers
+    // the shader table is built out of.
+    ThrowIfFailed(m_raytracingStateObject.As(&m_raytracingStateObjectProperties));
 }
 
 void App::InitSkybox()

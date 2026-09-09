@@ -168,6 +168,7 @@ private:
     void InitRaytracingAccelerationStructures();
     void InitRaytracingOutput();
     void InitRaytracingRootSignatures();
+    void InitRaytracingPipeline();
     void UpdateTopLevelAccelerationStructure(ID3D12GraphicsCommandList4* commandList);
     void RecordWorkerCommandList(UINT threadIndex);
     D3D12_GPU_VIRTUAL_ADDRESS CubeConstantBufferAddress(UINT cubeIndex) const;
@@ -378,6 +379,14 @@ private:
     // what lets the cube and plane hit groups read different vertex and
     // index buffers while running the same ClosestHitShader code.
     Microsoft::WRL::ComPtr<ID3D12RootSignature> m_raytracingLocalRootSignature;
+    // The raytracing counterpart of a PSO - but where a graphics PSO holds
+    // one vertex/pixel shader pair, a state object holds every shader that
+    // could possibly run during a DispatchRays, plus the root signatures
+    // and payload sizes tying them together.
+    Microsoft::WRL::ComPtr<ID3D12StateObject> m_raytracingStateObject;
+    // The same object viewed through the interface that hands out shader
+    // identifiers for the shader table.
+    Microsoft::WRL::ComPtr<ID3D12StateObjectProperties> m_raytracingStateObjectProperties;
 
     D3D12_VIEWPORT m_viewport = {};
     D3D12_RECT m_scissorRect = {};
