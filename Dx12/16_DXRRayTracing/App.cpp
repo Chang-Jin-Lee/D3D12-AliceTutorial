@@ -272,6 +272,7 @@ App::App(HWND hwnd, UINT width, UINT height)
     InitRaytracingOutput();
     InitRaytracingRootSignatures();
     InitRaytracingPipeline();
+    InitRaytracingShaderTable();
     InitSkybox();
 }
 
@@ -1678,6 +1679,96 @@ void App::InitRaytracingPipeline()
     // The interface that turns export names into the shader identifiers
     // the shader table is built out of.
     ThrowIfFailed(m_raytracingStateObject.As(&m_raytracingStateObjectProperties));
+}
+
+void App::InitRaytracingShaderTable()
+{
+    // Two alignment rules apply here, and they are deliberately different
+    // numbers:
+    //   - every record's stride must be a multiple of 32
+    //     (D3D12_RAYTRACING_SHADER_RECORD_BYTE_ALIGNMENT), and
+    //   - every table's start address must be a multiple of 64
+    //     (D3D12_RAYTRACING_SHADER_TABLE_BYTE_ALIGNMENT).
+    // Giving each table its own committed resource satisfies the second
+    // rule for free, since committed buffers already start well past a
+    // 64-byte boundary.
+    const UINT identifierSize = D3D12_SHADER_IDENTIFIER_SIZE_IN_BYTES; // 32
+    auto alignUp = [](UINT value, UINT alignment)
+    {
+        return (value + alignment - 1) & ~(alignment - 1);
+    };
+
+    auto shaderIdentifier = [&](const wchar_t* exportName)
+    {
+        void* identifier = m_raytracingStateObjectProperties->GetShaderIdentifier(exportName);
+        // A misspelled export name doesn't fail anywhere earlier - it just
+        // returns null here, and a table full of zeroes then produces a
+        // device removal at DispatchRays time with no useful diagnostic.
+        if (identifier == nullptr)
+        {
+            throw std::runtime_error("The raytracing state object has no export by that name.");
+        }
+        return identifier;
+    };
+
+    // RayGen: exactly one record, and no local root arguments, so the
+    // record is nothing but the identifier.
+    {
+        const UINT tableSize = alignUp(identifierSize, D3D12_RAYTRACING_SHADER_RECORD_BYTE_ALIGNMENT);
+        std::vector<uint8_t> table(tableSize, 0);
+        memcpy(table.data(), shaderIdentifier(kRayGenShaderName), identifierSize);
+        m_rayGenShaderTable = CreateUploadBuffer(m_device.Get(), table.data(), tableSize);
+    }
+
+    // Miss: two records, also identifier-only. Their order in this table
+    // is precisely what TraceRay's MissShaderIndex argument selects -
+    // index 0 for the camera ray, index 1 for the shadow ray.
+    {
+        m_missShaderTableStride = alignUp(identifierSize, D3D12_RAYTRACING_SHADER_RECORD_BYTE_ALIGNMENT);
+        m_missShaderTableSize = m_missShaderTableStride * 2;
+        std::vector<uint8_t> table(m_missShaderTableSize, 0);
+        memcpy(table.data(), shaderIdentifier(kMissShaderName), identifierSize);
+        memcpy(table.data() + m_missShaderTableStride, shaderIdentifier(kShadowMissShaderName), identifierSize);
+        m_missShaderTable = CreateUploadBuffer(m_device.Get(), table.data(), m_missShaderTableSize);
+    }
+
+    // Hit groups: two records, each carrying two root SRV addresses as
+    // local root arguments - 16 bytes on top of the 32-byte identifier.
+    // This is what a stride is actually for. The records genuinely differ
+    // in content, so the GPU can't just reuse one; it has to step by a
+    // fixed size to reach the record the traversal picked.
+    {
+        const UINT localArgumentSize = 2 * sizeof(D3D12_GPU_VIRTUAL_ADDRESS);
+        m_hitGroupShaderTableStride =
+            alignUp(identifierSize + localArgumentSize, D3D12_RAYTRACING_SHADER_RECORD_BYTE_ALIGNMENT);
+        m_hitGroupShaderTableSize = m_hitGroupShaderTableStride * 2;
+        std::vector<uint8_t> table(m_hitGroupShaderTableSize, 0);
+
+        auto writeHitGroupRecord = [&](UINT recordIndex, const wchar_t* hitGroupName,
+                                       ID3D12Resource* vertexBuffer, ID3D12Resource* indexBuffer)
+        {
+            uint8_t* record = table.data() + static_cast<size_t>(recordIndex) * m_hitGroupShaderTableStride;
+            memcpy(record, shaderIdentifier(hitGroupName), identifierSize);
+            // Root descriptors inside a shader record are raw GPU virtual
+            // addresses laid out in the order the local root signature
+            // declares them (t1 = vertices, t2 = indices) - there's no
+            // descriptor heap involved at all.
+            const D3D12_GPU_VIRTUAL_ADDRESS addresses[2] =
+            {
+                vertexBuffer->GetGPUVirtualAddress(),
+                indexBuffer->GetGPUVirtualAddress(),
+            };
+            memcpy(record + identifierSize, addresses, sizeof(addresses));
+        };
+
+        // Record 0 is what TLAS instances with
+        // InstanceContributionToHitGroupIndex == 0 select - the cubes.
+        // Record 1 is the ground plane's.
+        writeHitGroupRecord(0, kCubeHitGroupName, m_vertexBuffer.Get(), m_indexBuffer.Get());
+        writeHitGroupRecord(1, kPlaneHitGroupName, m_planeVertexBuffer.Get(), m_planeIndexBuffer.Get());
+
+        m_hitGroupShaderTable = CreateUploadBuffer(m_device.Get(), table.data(), m_hitGroupShaderTableSize);
+    }
 }
 
 void App::InitSkybox()

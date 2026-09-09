@@ -169,6 +169,7 @@ private:
     void InitRaytracingOutput();
     void InitRaytracingRootSignatures();
     void InitRaytracingPipeline();
+    void InitRaytracingShaderTable();
     void UpdateTopLevelAccelerationStructure(ID3D12GraphicsCommandList4* commandList);
     void RecordWorkerCommandList(UINT threadIndex);
     D3D12_GPU_VIRTUAL_ADDRESS CubeConstantBufferAddress(UINT cubeIndex) const;
@@ -387,6 +388,21 @@ private:
     // The same object viewed through the interface that hands out shader
     // identifiers for the shader table.
     Microsoft::WRL::ComPtr<ID3D12StateObjectProperties> m_raytracingStateObjectProperties;
+    // Shader tables: GPU-visible arrays of records, where a record is a
+    // 32-byte shader identifier optionally followed by that record's local
+    // root arguments. DispatchRays indexes into them by ray type (which
+    // miss shader) and by the hit group index the TLAS instance selected.
+    // This indirection is what a raytracing pass has instead of the
+    // "bind a PSO, then draw" model the raster passes use - which shader
+    // runs is decided by geometry the GPU finds mid-traversal, so it can't
+    // come from a command list call.
+    Microsoft::WRL::ComPtr<ID3D12Resource> m_rayGenShaderTable;
+    Microsoft::WRL::ComPtr<ID3D12Resource> m_missShaderTable;
+    UINT m_missShaderTableStride = 0;
+    UINT m_missShaderTableSize = 0;
+    Microsoft::WRL::ComPtr<ID3D12Resource> m_hitGroupShaderTable;
+    UINT m_hitGroupShaderTableStride = 0;
+    UINT m_hitGroupShaderTableSize = 0;
 
     D3D12_VIEWPORT m_viewport = {};
     D3D12_RECT m_scissorRect = {};
