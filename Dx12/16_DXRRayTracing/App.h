@@ -122,6 +122,7 @@ private:
     static const UINT CubesPerWorker = CubeCount / WorkerThreadCount;
 
     void InitDevice();
+    void InitRaytracingSupport();
     void InitCommandQueue();
     void InitSwapChain();
     void InitRenderTargets();
@@ -151,6 +152,12 @@ private:
 
     Microsoft::WRL::ComPtr<IDXGIFactory4> m_factory;
     Microsoft::WRL::ComPtr<ID3D12Device> m_device;
+    // Every DXR entry point - CreateStateObject,
+    // GetRaytracingAccelerationStructurePrebuildInfo - lives on
+    // ID3D12Device5 rather than the base device above, so steps 1-15 never
+    // needed to ask for it. See InitRaytracingSupport, which also rejects
+    // GPUs whose raytracing tier is too low.
+    Microsoft::WRL::ComPtr<ID3D12Device5> m_dxrDevice;
     Microsoft::WRL::ComPtr<ID3D12CommandQueue> m_commandQueue;
     Microsoft::WRL::ComPtr<IDXGISwapChain3> m_swapChain;
     Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_rtvHeap;

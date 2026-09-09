@@ -139,6 +139,7 @@ App::App(HWND hwnd, UINT width, UINT height)
     QueryPerformanceCounter(&m_startTime);
 
     InitDevice();
+    InitRaytracingSupport();
     InitCommandQueue();
     InitSwapChain();
     InitRenderTargets();
@@ -183,6 +184,30 @@ void App::InitDevice()
 
     ThrowIfFailed(CreateDXGIFactory2(factoryFlags, IID_PPV_ARGS(&m_factory)));
     ThrowIfFailed(D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_device)));
+}
+
+void App::InitRaytracingSupport()
+{
+    // ID3D12Device5 and ID3D12GraphicsCommandList4 both arrived in Windows
+    // 10 1809 alongside DXR itself; an older runtime hands back the same
+    // ID3D12Device as always and fails this cast.
+    if (FAILED(m_device.As(&m_dxrDevice)))
+    {
+        throw std::runtime_error(
+            "ID3D12Device5 is unavailable - DirectX Raytracing needs Windows 10 1809 or newer.");
+    }
+
+    // Having the interface is not the same as having the hardware. DXR is
+    // an optional feature, and pre-RTX GPUs report TIER_NOT_SUPPORTED even
+    // on a current OS - so ask before building anything that assumes it.
+    D3D12_FEATURE_DATA_D3D12_OPTIONS5 options5 = {};
+    if (FAILED(m_device->CheckFeatureSupport(D3D12_FEATURE_D3D12_OPTIONS5, &options5, sizeof(options5))) ||
+        options5.RaytracingTier < D3D12_RAYTRACING_TIER_1_0)
+    {
+        throw std::runtime_error(
+            "This step needs a GPU with DirectX Raytracing Tier 1.0 support "
+            "(GeForce RTX 2000 series or newer, or an equivalent AMD/Intel part).");
+    }
 }
 
 void App::InitCommandQueue()
