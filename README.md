@@ -23,9 +23,9 @@ Direct3D 12 그래픽스 파이프라인을 가장 쉬운 단계부터 하나씩
 |---|---|---|---|
 | <div align="center">[<img src="docs/images/09_ShadowMap.png" width="200"/>](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/09_ShadowMap)</div> | <div align="center">[<img src="docs/images/10_MSAA.png" width="200"/>](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/10_MSAA)</div> | <div align="center">[<img src="docs/images/11_ComputeShader.png" width="200"/>](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/11_ComputeShader)</div> | <div align="center">[<img src="docs/images/12_PostProcessing.png" width="200"/>](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/12_PostProcessing)</div> |
 
-| [13. PBRMaterials](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/13_PBRMaterials) | [14. BindlessResources](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/14_BindlessResources) | [15. MultiThreadedRendering](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/15_MultiThreadedRendering) |
-|---|---|---|
-| <div align="center">[<img src="docs/images/13_PBRMaterials.png" width="200"/>](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/13_PBRMaterials)</div> | <div align="center">[<img src="docs/images/14_BindlessResources.png" width="200"/>](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/14_BindlessResources)</div> | <div align="center">[<img src="docs/images/15_MultiThreadedRendering.png" width="200"/>](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/15_MultiThreadedRendering)</div> |
+| [13. PBRMaterials](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/13_PBRMaterials) | [14. BindlessResources](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/14_BindlessResources) | [15. MultiThreadedRendering](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/15_MultiThreadedRendering) | [16. DXRRayTracing](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/16_DXRRayTracing) |
+|---|---|---|---|
+| <div align="center">[<img src="docs/images/13_PBRMaterials.png" width="200"/>](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/13_PBRMaterials)</div> | <div align="center">[<img src="docs/images/14_BindlessResources.png" width="200"/>](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/14_BindlessResources)</div> | <div align="center">[<img src="docs/images/15_MultiThreadedRendering.png" width="200"/>](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/15_MultiThreadedRendering)</div> | <div align="center">[<img src="docs/images/16_DXRRayTracing.png" width="200"/>](https://github.com/Chang-Jin-Lee/D3D12-AliceTutorial/tree/main/Dx12/16_DXRRayTracing)</div> |
 
 ---
 
@@ -39,7 +39,9 @@ Direct3D 12 그래픽스 파이프라인을 가장 쉬운 단계부터 하나씩
 ## 주의사항
 - 수학 라이브러리인 DirectXMath 사용
 - 셰이더 컴파일을 위해 `D3DCompileFromFile` 런타임 컴파일 사용
+- 16단계의 레이트레이싱 셰이더만 예외로 DXC(`IDxcCompiler3`)로 런타임 컴파일합니다 — DXR은 FXC가 만들 수 없는 DXIL(셰이더 모델 6.3+)을 요구합니다. DXC 역시 Windows SDK에 포함되어 있어 외부 의존성은 늘지 않습니다
 - Debug 빌드에서는 D3D12 디버그 레이어(`ID3D12Debug`)를 활성화합니다
+- 16단계는 DXR Tier 1.0 이상을 지원하는 GPU(GeForce RTX 2000 시리즈 이후 또는 동급 AMD/Intel)가 필요합니다. 1~15단계는 D3D12 12.0을 지원하는 GPU면 모두 동작합니다
 
 ## 참고 자료
 - [DirectX-Graphics-Samples (GitHub)](https://github.com/microsoft/DirectX-Graphics-Samples)
