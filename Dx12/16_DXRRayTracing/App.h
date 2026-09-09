@@ -37,6 +37,16 @@ struct SceneConstantBuffer
     DirectX::XMFLOAT4 materialParams; // .x = metallic, .y = roughness
 };
 
+// Global root signature b0 for the raytracing pass: everything RayGenShader
+// needs to turn a pixel coordinate into a world-space camera ray, plus the
+// direction its shadow ray aims at.
+struct RaytracingConstantBuffer
+{
+    DirectX::XMFLOAT4X4 inverseViewProjection;
+    DirectX::XMFLOAT4 cameraPosition;
+    DirectX::XMFLOAT4 lightDirection; // points FROM the light, same as SceneConstantBuffer
+};
+
 struct SkyboxVertex
 {
     DirectX::XMFLOAT3 position;
@@ -102,6 +112,13 @@ private:
     // beyond what's in use on day one, so it's declared generously here
     // too rather than as an exact-fit table of 4.
     static const UINT BindlessHeapCapacity = 16;
+    // Bindless slot holding the raytraced shadow mask's SRV. Slots 0-3 are
+    // the two diffuse textures, the normal map, and the shadow map
+    // (InitTextures), so the mask takes the next one free. Shaders.hlsl
+    // reads it through BindlessMaterialIndices::shadowMaskIndex - exactly
+    // the same mechanism step 14 introduced for material textures, now
+    // carrying a render target the GPU produced this frame.
+    static const UINT ShadowMaskBindlessIndex = 4;
     // Must be even - the bloom ping-pong loop in Render() alternates
     // between m_bloomTargetA/B, and the composite pass always reads the
     // result back out of m_bloomTargetA (see InitComputePostProcess). A
@@ -149,6 +166,8 @@ private:
     void InitSkybox();
     void InitShadowMap();
     void InitRaytracingAccelerationStructures();
+    void InitRaytracingOutput();
+    void InitRaytracingRootSignatures();
     void UpdateTopLevelAccelerationStructure(ID3D12GraphicsCommandList4* commandList);
     void RecordWorkerCommandList(UINT threadIndex);
     D3D12_GPU_VIRTUAL_ADDRESS CubeConstantBufferAddress(UINT cubeIndex) const;
@@ -340,6 +359,25 @@ private:
     // instance descs, so the rasterizer and the ray tracer can never
     // disagree about where the geometry is.
     std::array<DirectX::XMFLOAT3X4, CubeCount> m_cubeInstanceTransforms;
+
+    // Full-resolution, single-sample visibility mask written by
+    // DispatchRays and read by the color pass. R8_UNORM is plenty: the
+    // shader only ever writes 0 (occluded) or 1 (lit).
+    Microsoft::WRL::ComPtr<ID3D12Resource> m_shadowMask;
+    // The mask's UAV gets its own one-descriptor heap rather than sharing
+    // m_srvHeap. Only one descriptor heap of a given type can be bound at
+    // a time, and the raytracing pass and the color pass want different
+    // ones - keeping the mask's write view and read view in separate heaps
+    // makes which pass owns which obvious.
+    Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> m_raytracingUavHeap;
+    Microsoft::WRL::ComPtr<ID3D12Resource> m_raytracingConstantBuffer;
+    RaytracingConstantBuffer* m_mappedRaytracingConstantBuffer = nullptr;
+    // Shared by every shader in the raytracing state object.
+    Microsoft::WRL::ComPtr<ID3D12RootSignature> m_raytracingGlobalRootSignature;
+    // Bound per shader table record rather than per command list - this is
+    // what lets the cube and plane hit groups read different vertex and
+    // index buffers while running the same ClosestHitShader code.
+    Microsoft::WRL::ComPtr<ID3D12RootSignature> m_raytracingLocalRootSignature;
 
     D3D12_VIEWPORT m_viewport = {};
     D3D12_RECT m_scissorRect = {};

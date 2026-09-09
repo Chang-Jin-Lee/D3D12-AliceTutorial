@@ -191,6 +191,8 @@ App::App(HWND hwnd, UINT width, UINT height)
     InitRaytracingAccelerationStructures();
     InitConstantBuffer();
     InitTextures();
+    InitRaytracingOutput();
+    InitRaytracingRootSignatures();
     InitSkybox();
 }
 
@@ -203,6 +205,7 @@ App::~App()
     if (m_shadowCubeConstantBuffers) m_shadowCubeConstantBuffers->Unmap(0, nullptr);
     if (m_shadowPlaneConstantBuffer) m_shadowPlaneConstantBuffer->Unmap(0, nullptr);
     if (m_tlasInstanceDescs) m_tlasInstanceDescs->Unmap(0, nullptr);
+    if (m_raytracingConstantBuffer) m_raytracingConstantBuffer->Unmap(0, nullptr);
     CloseHandle(m_fenceEvent);
 }
 
@@ -1364,6 +1367,124 @@ void App::InitTextures()
     shadowSrvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
     shadowSrvDesc.Texture2D.MipLevels = 1;
     m_device->CreateShaderResourceView(m_shadowMap.Get(), &shadowSrvDesc, srvHandle);
+}
+
+void App::InitRaytracingOutput()
+{
+    D3D12_HEAP_PROPERTIES heapProps = {};
+    heapProps.Type = D3D12_HEAP_TYPE_DEFAULT;
+
+    D3D12_RESOURCE_DESC maskDesc = {};
+    maskDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+    maskDesc.Width = m_width;
+    maskDesc.Height = m_height;
+    maskDesc.DepthOrArraySize = 1;
+    maskDesc.MipLevels = 1;
+    // One channel is all a visibility mask needs. Note this is a plain
+    // single-sample texture even though the color pass that reads it is
+    // 4x MSAA - one ray per pixel, shared by all four subsamples.
+    maskDesc.Format = DXGI_FORMAT_R8_UNORM;
+    maskDesc.SampleDesc.Count = 1;
+    maskDesc.Flags = D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS;
+
+    ThrowIfFailed(m_device->CreateCommittedResource(
+        &heapProps, D3D12_HEAP_FLAG_NONE, &maskDesc,
+        D3D12_RESOURCE_STATE_UNORDERED_ACCESS, nullptr, IID_PPV_ARGS(&m_shadowMask)));
+
+    D3D12_DESCRIPTOR_HEAP_DESC uavHeapDesc = {};
+    uavHeapDesc.NumDescriptors = 1;
+    uavHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+    uavHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+    ThrowIfFailed(m_device->CreateDescriptorHeap(&uavHeapDesc, IID_PPV_ARGS(&m_raytracingUavHeap)));
+
+    D3D12_UNORDERED_ACCESS_VIEW_DESC uavDesc = {};
+    uavDesc.Format = DXGI_FORMAT_R8_UNORM;
+    uavDesc.ViewDimension = D3D12_UAV_DIMENSION_TEXTURE2D;
+    m_device->CreateUnorderedAccessView(
+        m_shadowMask.Get(), nullptr, &uavDesc,
+        m_raytracingUavHeap->GetCPUDescriptorHandleForHeapStart());
+
+    // The read side goes into the step 14 bindless table, so the pixel
+    // shader reaches the mask the same way it reaches any other texture -
+    // by index, with no extra descriptor table to bind.
+    D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
+    srvDesc.Format = DXGI_FORMAT_R8_UNORM;
+    srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+    srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+    srvDesc.Texture2D.MipLevels = 1;
+
+    const UINT srvDescriptorSize =
+        m_device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+    D3D12_CPU_DESCRIPTOR_HANDLE srvHandle = m_srvHeap->GetCPUDescriptorHandleForHeapStart();
+    srvHandle.ptr += static_cast<SIZE_T>(ShadowMaskBindlessIndex) * srvDescriptorSize;
+    m_device->CreateShaderResourceView(m_shadowMask.Get(), &srvDesc, srvHandle);
+
+    m_raytracingConstantBuffer = CreateConstantBuffer(
+        m_device.Get(), sizeof(RaytracingConstantBuffer),
+        reinterpret_cast<void**>(&m_mappedRaytracingConstantBuffer));
+}
+
+void App::InitRaytracingRootSignatures()
+{
+    // Global root signature: bound once per command list with the ordinary
+    // SetComputeRoot* calls, and visible to every shader in the state
+    // object regardless of which record dispatched it.
+    D3D12_DESCRIPTOR_RANGE uavRange = {};
+    uavRange.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_UAV;
+    uavRange.NumDescriptors = 1;
+    uavRange.BaseShaderRegister = 0; // u0 - the shadow mask
+
+    D3D12_ROOT_PARAMETER globalParameters[3] = {};
+    globalParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;
+    globalParameters[0].DescriptorTable.NumDescriptorRanges = 1;
+    globalParameters[0].DescriptorTable.pDescriptorRanges = &uavRange;
+    // The TLAS binds as a root SRV rather than through a heap: an
+    // acceleration structure has no CPU descriptor to create in the first
+    // place, only a GPU virtual address, so a root descriptor is the
+    // natural fit.
+    globalParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_SRV;
+    globalParameters[1].Descriptor.ShaderRegister = 0; // t0
+    globalParameters[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;
+    globalParameters[2].Descriptor.ShaderRegister = 0; // b0
+
+    D3D12_ROOT_SIGNATURE_DESC globalDesc = {};
+    globalDesc.NumParameters = _countof(globalParameters);
+    globalDesc.pParameters = globalParameters;
+    // None of the input-assembler flags the graphics root signatures use
+    // mean anything here - there's no vertex stage in a raytracing pass.
+    globalDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_NONE;
+
+    ComPtr<ID3DBlob> signature;
+    ComPtr<ID3DBlob> error;
+    ThrowIfFailed(D3D12SerializeRootSignature(
+        &globalDesc, D3D_ROOT_SIGNATURE_VERSION_1, &signature, &error));
+    ThrowIfFailed(m_device->CreateRootSignature(
+        0, signature->GetBufferPointer(), signature->GetBufferSize(),
+        IID_PPV_ARGS(&m_raytracingGlobalRootSignature)));
+
+    // Local root signature: its arguments come from the shader table
+    // record that dispatched the shader, not from any command list call.
+    // That's what lets one ClosestHitShader read the cube's buffers when
+    // it runs for a cube and the plane's when it runs for the plane.
+    D3D12_ROOT_PARAMETER localParameters[2] = {};
+    localParameters[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_SRV;
+    localParameters[0].Descriptor.ShaderRegister = 1; // t1 - vertex buffer
+    localParameters[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_SRV;
+    localParameters[1].Descriptor.ShaderRegister = 2; // t2 - index buffer
+
+    D3D12_ROOT_SIGNATURE_DESC localDesc = {};
+    localDesc.NumParameters = _countof(localParameters);
+    localDesc.pParameters = localParameters;
+    // This single flag is the entire difference between a local and a
+    // global root signature at the API level.
+    localDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_LOCAL_ROOT_SIGNATURE;
+
+    ComPtr<ID3DBlob> localSignature;
+    ThrowIfFailed(D3D12SerializeRootSignature(
+        &localDesc, D3D_ROOT_SIGNATURE_VERSION_1, &localSignature, &error));
+    ThrowIfFailed(m_device->CreateRootSignature(
+        0, localSignature->GetBufferPointer(), localSignature->GetBufferSize(),
+        IID_PPV_ARGS(&m_raytracingLocalRootSignature)));
 }
 
 void App::InitSkybox()
